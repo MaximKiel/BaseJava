@@ -3,20 +3,19 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
-import java.util.Scanner;
 
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
+
     protected static final int STORAGE_LIMIT = 10000;
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
 
     public void update(Resume r) {
         if (findIndex(r.getUuid()) >= 0) {
-            Scanner scanner = new Scanner(System.in);
-            r.setUuid(scanner.nextLine());
+            r = new Resume();
         } else {
             System.out.println("ERROR: resume is not found");
         }
@@ -28,9 +27,11 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
+        int index = findIndex(r.getUuid());
+
         if (size >= STORAGE_LIMIT) {
             System.out.println("ERROR: the storage is full");
-        } else if (findIndex(r.getUuid()) >= 0) {
+        } else if (index >= 0) {
             System.out.println("ERROR: resume " + r.getUuid() + " has been saved already in the storage");
         } else {
             storage[size] = r;
@@ -39,8 +40,10 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        if (findIndex(uuid) >= 0) {
-            return storage[findIndex(uuid)];
+        int index = findIndex(uuid);
+
+        if (index >= 0) {
+            return storage[index];
         } else {
             System.out.println("ERROR: resume is not found");
             return null;
@@ -48,8 +51,10 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        if (findIndex(uuid) >= 0) {
-            storage[findIndex(uuid)] = storage[size - 1];
+        int index = findIndex(uuid);
+
+        if (index >= 0) {
+            storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
         } else {
