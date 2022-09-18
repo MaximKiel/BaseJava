@@ -32,7 +32,7 @@ public abstract class AbstractArrayStorage implements Storage {
         } else if (index >= 0) {
             System.out.println("ERROR: resume " + r.getUuid() + " has been saved already in the storage");
         } else {
-            storage[setSavingIndex(index)] = r;
+            storage[getSavingIndex(index)] = r;
             size++;
         }
     }
@@ -66,7 +66,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int findIndex(String uuid);
 
-    protected abstract int setSavingIndex(int index);
+    protected abstract int getSavingIndex(int index);
 
     protected abstract void realizeDelete(int index);
 }

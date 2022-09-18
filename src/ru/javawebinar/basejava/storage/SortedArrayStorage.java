@@ -14,7 +14,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected int setSavingIndex(int index) {
+    protected int getSavingIndex(int index) {
         int savingIndex = (index + 1) * -1;
         System.arraycopy(storage, savingIndex, storage, savingIndex + 1, size - savingIndex);
         return savingIndex;

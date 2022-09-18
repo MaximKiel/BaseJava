@@ -16,7 +16,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected int setSavingIndex(int index) {
+    protected int getSavingIndex(int index) {
         return size;
     }
 
