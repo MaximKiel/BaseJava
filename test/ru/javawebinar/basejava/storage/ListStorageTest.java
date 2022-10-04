@@ -4,18 +4,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public abstract class AbstractArrayStorageTest {
+class ListStorageTest {
 
-    private final Storage storage;
-
-    protected AbstractArrayStorageTest (Storage storage) {
-        this.storage = storage;
-    }
+    private final ListStorage testListStorage = new ListStorage();
 
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
@@ -30,39 +25,39 @@ public abstract class AbstractArrayStorageTest {
 
     @BeforeEach
     public void setUp() {
-        storage.clear();
-        storage.save(RESUME_1);
-        storage.save(RESUME_2);
-        storage.save(RESUME_3);
+        testListStorage.clear();
+        testListStorage.save(RESUME_1);
+        testListStorage.save(RESUME_2);
+        testListStorage.save(RESUME_3);
     }
 
     @Test
     void clear() {
-        storage.clear();
+        testListStorage.clear();
         assertSize(0);
-        assertArrayEquals(storage.getAll(), new Resume[0]);
+        assertArrayEquals(testListStorage.getAll(), new Resume[0]);
     }
 
     @Test
     void update() {
         Resume newResume = new Resume(UUID_1);
-        storage.update(newResume);
-        assertSame(newResume, storage.get(UUID_1));
+        testListStorage.update(newResume);
+        assertSame(newResume, testListStorage.get(UUID_1));
     }
 
     @Test
     void save() {
-        storage.save(RESUME_4);
+        testListStorage.save(RESUME_4);
         assertGet(RESUME_4);
         assertSize(4);
     }
 
     @Test
     void delete() {
-        storage.delete(UUID_1);
+        testListStorage.delete(UUID_1);
         assertSize(2);
         assertThrows(NotExistStorageException.class, () ->
-            storage.get(UUID_1)
+                testListStorage.get(UUID_1)
         );
     }
 
@@ -76,7 +71,7 @@ public abstract class AbstractArrayStorageTest {
     @Test
     void getAll() {
         Resume[] expected = {RESUME_1, RESUME_2, RESUME_3};
-        assertArrayEquals(expected, storage.getAll());
+        assertArrayEquals(expected, testListStorage.getAll());
         assertSize(3);
     }
 
@@ -88,53 +83,36 @@ public abstract class AbstractArrayStorageTest {
     @Test
     void getNotExist() {
         assertThrows(NotExistStorageException.class, () ->
-            storage.get(DUMMY)
+                testListStorage.get(DUMMY)
         );
     }
 
     @Test
     void saveExist() {
         assertThrows(ExistStorageException.class, () ->
-            storage.save(RESUME_1)
+                testListStorage.save(RESUME_1)
         );
     }
 
     @Test
     void deleteNotExist() {
         assertThrows(NotExistStorageException.class, () ->
-                storage.delete(DUMMY)
+                testListStorage.delete(DUMMY)
         );
     }
 
     @Test
     void updateNotExist() {
         assertThrows(NotExistStorageException.class, () ->
-                storage.update(RESUME_4)
-        );
-    }
-
-    @Test
-    void getOverflowException() {
-        storage.clear();
-
-        try {
-            for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume());
-            }
-        } catch (StorageException e) {
-            fail("Early overflow exception");
-        }
-
-        assertThrows(StorageException.class, () ->
-            storage.save(new Resume())
+                testListStorage.update(RESUME_4)
         );
     }
 
     private void assertSize(int size) {
-        assertEquals(size, storage.size());
+        assertEquals(size, testListStorage.size());
     }
 
     private void assertGet(Resume resume) {
-        assertEquals(resume, storage.get(resume.getUuid()));
+        assertEquals(resume, testListStorage.get(resume.getUuid()));
     }
 }
