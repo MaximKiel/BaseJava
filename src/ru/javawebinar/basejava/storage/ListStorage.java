@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
@@ -15,54 +14,61 @@ public class ListStorage extends AbstractStorage {
         listStorage.trimToSize();
     }
 
-    public void update(Resume r) {
-        int index = listStorage.indexOf(r);
-        if (index >= 0) {
-            listStorage.set(index, r);
-        } else {
-            throw new NotExistStorageException(r.getUuid());
-        }
-    }
-
-    public void save(Resume r) {
-        int index = listStorage.indexOf(r);
-        if (index >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        } else {
-            saveResume(index, r);
-        }
-    }
-
-    public Resume[] getAll() {
-        return listStorage.toArray(new Resume[0]);
-    }
-
     public int size() {
         return listStorage.size();
     }
 
     @Override
-    protected Resume getResume(int index) {
-        return listStorage.get(index);
-    }
-
-    @Override
-    protected int findIndex(String uuid) {
+    protected Object findSearchKey(String uuid) {
         for (Resume r : listStorage) {
             if (r.getUuid().equals(uuid)) {
-                return listStorage.indexOf(r);
+                return r;
             }
         }
-        return -1;
+        return null;
     }
 
     @Override
-    protected void saveResume(int index, Resume r) {
+    protected boolean isExist(Object object) {
+        return findSearchKey((String) object) != null;
+    }
+
+    @Override
+    protected void doUpdate(Resume r) {
+        listStorage.set(findIndex(r.getUuid()), (Resume) findSearchKey(r.getUuid()));
+    }
+
+    @Override
+    protected void doSave(Resume r) {
         listStorage.add(r);
     }
 
     @Override
-    protected void deleteResume(int index) {
-        listStorage.remove(index);
+    protected void doDelete(String uuid) {
+        listStorage.remove((Resume) findSearchKey(uuid));
+    }
+
+    @Override
+    protected Resume doGet(String uuid) {
+        return listStorage.get(findIndex(uuid));
+    }
+
+    @Override
+    protected Resume[] doGetAll() {
+        return listStorage.toArray(new Resume[0]);
+    }
+
+    private int findIndex(String uuid) {
+        int index = -1;
+        for (Resume r : listStorage) {
+            if (r.getUuid().equals(uuid)) {
+                index = listStorage.indexOf(r);
+                break;
+            }
+        }
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
+        }
+        return index;
     }
 }

@@ -1,7 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistStorageException;
-import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
@@ -18,37 +16,48 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    public void update(Resume r) {
-        int index = findIndex(r.getUuid());
-        if (index >= 0) {
-            storage[index] = r;
-        } else {
-            throw new NotExistStorageException(r.getUuid());
-        }
-    }
-
-    public void save(Resume r) {
-        int index = findIndex(r.getUuid());
-        if (size >= STORAGE_LIMIT) {
-            throw new StorageException("Storage overflow", r.getUuid());
-        } else if (index >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        } else {
-            saveResume(index, r);
-            size++;
-        }
-    }
-
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
-    }
-
     public int size() {
         return size;
     }
 
     @Override
-    protected Resume getResume(int index) {
-        return storage[index];
+    protected boolean isExist(Object object) {
+        return (int) findSearchKey((String) object) >= 0;
     }
+
+    @Override
+    protected void doUpdate(Resume r) {
+        storage[(int) findSearchKey(r.getUuid())] = r;
+    }
+
+    @Override
+    protected void doSave(Resume r) {
+        if (size >= STORAGE_LIMIT) {
+            throw new StorageException("Storage overflow", r.getUuid());
+        } else {
+            saveResume(r);
+            size++;
+        }
+    }
+
+    @Override
+    protected void doDelete(String uuid) {
+        deleteResume((int) findSearchKey(uuid));
+        storage[size - 1] = null;
+        size--;
+    }
+
+    @Override
+    protected Resume doGet(String uuid) {
+        return storage[(int) findSearchKey(uuid)];
+    }
+
+    @Override
+    protected Resume[] doGetAll() {
+        return Arrays.copyOf(storage, size);
+    }
+
+    protected abstract void saveResume(Resume r);
+
+    protected abstract void deleteResume(int index);
 }
