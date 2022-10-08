@@ -11,18 +11,20 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
+    @Override
     public int size() {
         return size;
     }
 
     @Override
-    protected boolean isExist(Object object) {
-        return (int) findSearchKey((String) object) >= 0;
+    protected boolean isExist(Object searchKey) {
+        return (int) searchKey >= 0;
     }
 
     @Override
@@ -48,8 +50,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume doGet(String uuid) {
-        return storage[(int) findSearchKey(uuid)];
+    protected Resume doGet(Object searchKey) {
+        return storage[(int) searchKey];
     }
 
     @Override

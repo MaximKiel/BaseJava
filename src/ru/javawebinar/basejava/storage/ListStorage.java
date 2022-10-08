@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
@@ -9,33 +8,37 @@ public class ListStorage extends AbstractStorage {
 
     private final ArrayList<Resume> listStorage = new ArrayList<>();
 
+    @Override
     public void clear() {
         listStorage.clear();
         listStorage.trimToSize();
     }
 
+    @Override
     public int size() {
         return listStorage.size();
     }
 
     @Override
     protected Object findSearchKey(String uuid) {
+        int index = -1;
         for (Resume r : listStorage) {
             if (r.getUuid().equals(uuid)) {
-                return r;
+                index = listStorage.indexOf(r);
+                break;
             }
         }
-        return null;
+        return index;
     }
 
     @Override
-    protected boolean isExist(Object object) {
-        return findSearchKey((String) object) != null;
+    protected boolean isExist(Object searchKey) {
+        return (int) searchKey >= 0;
     }
 
     @Override
     protected void doUpdate(Resume r) {
-        listStorage.set(findIndex(r.getUuid()), (Resume) findSearchKey(r.getUuid()));
+        listStorage.set((int) findSearchKey(r.getUuid()), r);
     }
 
     @Override
@@ -45,30 +48,16 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void doDelete(String uuid) {
-        listStorage.remove((Resume) findSearchKey(uuid));
+        listStorage.remove((int) findSearchKey(uuid));
     }
 
     @Override
-    protected Resume doGet(String uuid) {
-        return listStorage.get(findIndex(uuid));
+    protected Resume doGet(Object searchKey) {
+        return listStorage.get((int) searchKey);
     }
 
     @Override
     protected Resume[] doGetAll() {
         return listStorage.toArray(new Resume[0]);
-    }
-
-    private int findIndex(String uuid) {
-        int index = -1;
-        for (Resume r : listStorage) {
-            if (r.getUuid().equals(uuid)) {
-                index = listStorage.indexOf(r);
-                break;
-            }
-        }
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return index;
     }
 }

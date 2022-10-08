@@ -7,59 +7,35 @@ import ru.javawebinar.basejava.model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     public void update(Resume r) {
-        if (isExist(r)) {
-            doUpdate(r);
-        } else {
-            throw new NotExistStorageException(r.getUuid());
-        }
+        findExistingSearchKey(r.getUuid());
+        doUpdate(r);
     }
 
     public void save(Resume r) {
-        if (isExist(r)) {
-            throw new ExistStorageException(r.getUuid());
-        } else {
-            doSave(r);
-        }
+        findNotExistingSearchKey(r.getUuid());
+        doSave(r);
     }
 
     public void delete(String uuid) {
-        if (isExist(findSearchKey(uuid))) {
-            doDelete(uuid);
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
+        findExistingSearchKey(uuid);
+        doDelete(uuid);
     }
 
     public Resume get(String uuid) {
-        if (isExist(findSearchKey(uuid))) {
-            return doGet(uuid);
-        }
-        throw new NotExistStorageException(uuid);
+        Object searchKey = findExistingSearchKey(uuid);
+        return doGet(searchKey);
     }
 
     public Resume[] getAll() {
         return doGetAll();
     }
 
-    protected abstract Object findSearchKey(String uuid);
-
-    protected abstract boolean isExist(Object object);
-
-    protected abstract void doUpdate(Resume r);
-
-    protected abstract void doSave(Resume r);
-
-    protected abstract void doDelete(String uuid);
-
-    protected abstract Resume doGet(String uuid);
-
-    protected abstract Resume[] doGetAll();
-
     private Object findExistingSearchKey(String uuid) {
-        if (!isExist(findSearchKey(uuid))) {
+        Object searchKey = findSearchKey(uuid);
+        if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
-        return findSearchKey(uuid);
+        return searchKey;
     }
 
     private void findNotExistingSearchKey(String uuid) {
@@ -67,4 +43,18 @@ public abstract class AbstractStorage implements Storage {
             throw new ExistStorageException(uuid);
         }
     }
+
+    protected abstract Object findSearchKey(String uuid);
+
+    protected abstract boolean isExist(Object searchKey);
+
+    protected abstract void doUpdate(Resume r);
+
+    protected abstract void doSave(Resume r);
+
+    protected abstract void doDelete(String uuid);
+
+    protected abstract Resume doGet(Object searchKey);
+
+    protected abstract Resume[] doGetAll();
 }
