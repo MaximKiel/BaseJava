@@ -6,16 +6,16 @@ import java.util.HashMap;
 
 public class MapStorage extends AbstractStorage {
 
-    private final HashMap<String, Resume> hashMapStorage = new HashMap<>();
+    private final HashMap<String, Resume> storage = new HashMap<>();
 
     @Override
     public void clear() {
-        hashMapStorage.clear();
+        storage.clear();
     }
 
     @Override
     public int size() {
-        return hashMapStorage.size();
+        return storage.size();
     }
 
     @Override
@@ -25,31 +25,31 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return hashMapStorage.get((String) searchKey) != null;
+        return storage.containsKey((String) searchKey);
     }
 
     @Override
     protected void doUpdate(Resume r) {
-        hashMapStorage.replace(r.getUuid(), r);
+        storage.replace(r.getUuid(), r);
     }
 
     @Override
     protected void doSave(Resume r) {
-        hashMapStorage.put(r.getUuid(), r);
+        storage.put(r.getUuid(), r);
     }
 
     @Override
     protected void doDelete(String uuid) {
-        hashMapStorage.remove(uuid);
+        storage.remove(uuid);
     }
 
     @Override
     protected Resume doGet(Object searchKey) {
-        return hashMapStorage.get((String) searchKey);
+        return storage.get((String) searchKey);
     }
 
     @Override
     protected Resume[] doGetAll() {
-        return hashMapStorage.values().toArray(new Resume[0]);
+        return storage.values().toArray(new Resume[0]);
     }
 }

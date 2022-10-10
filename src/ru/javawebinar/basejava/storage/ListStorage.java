@@ -11,7 +11,6 @@ public class ListStorage extends AbstractStorage {
     @Override
     public void clear() {
         listStorage.clear();
-        listStorage.trimToSize();
     }
 
     @Override
@@ -21,14 +20,12 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected Object findSearchKey(String uuid) {
-        int index = -1;
-        for (Resume r : listStorage) {
-            if (r.getUuid().equals(uuid)) {
-                index = listStorage.indexOf(r);
-                break;
+        for (int i = 0; i < listStorage.size(); i++) {
+            if (uuid.equals(listStorage.get(i).getUuid())) {
+                return i;
             }
         }
-        return index;
+        return -1;
     }
 
     @Override
