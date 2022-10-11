@@ -30,7 +30,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void doUpdate(Resume r, Object searchKey) {
-        storage.replace(r.getUuid(), r);
+        storage.replace((String) searchKey, r);
     }
 
     @Override
