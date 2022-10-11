@@ -35,7 +35,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void doSave(Resume r, Object searchKey) {
-        storage.put(r.getUuid(), r);
+        storage.put((String) searchKey, r);
     }
 
     @Override
