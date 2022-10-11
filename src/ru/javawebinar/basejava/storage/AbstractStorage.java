@@ -7,18 +7,18 @@ import ru.javawebinar.basejava.model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     public void update(Resume r) {
-        findExistingSearchKey(r.getUuid());
-        doUpdate(r);
+        Object searchKey = findExistingSearchKey(r.getUuid());
+        doUpdate(r, searchKey);
     }
 
     public void save(Resume r) {
-        findNotExistingSearchKey(r.getUuid());
-        doSave(r);
+        Object searchKey = findNotExistingSearchKey(r.getUuid());
+        doSave(r, searchKey);
     }
 
     public void delete(String uuid) {
-        findExistingSearchKey(uuid);
-        doDelete(uuid);
+        Object searchKey = findExistingSearchKey(uuid);
+        doDelete(searchKey);
     }
 
     public Resume get(String uuid) {
@@ -38,21 +38,23 @@ public abstract class AbstractStorage implements Storage {
         return searchKey;
     }
 
-    private void findNotExistingSearchKey(String uuid) {
-        if (isExist(findSearchKey(uuid))) {
+    private Object findNotExistingSearchKey(String uuid) {
+        Object searchKey = findSearchKey(uuid);
+        if (isExist(searchKey)) {
             throw new ExistStorageException(uuid);
         }
+        return searchKey;
     }
 
     protected abstract Object findSearchKey(String uuid);
 
     protected abstract boolean isExist(Object searchKey);
 
-    protected abstract void doUpdate(Resume r);
+    protected abstract void doUpdate(Resume r, Object searchKey);
 
-    protected abstract void doSave(Resume r);
+    protected abstract void doSave(Resume r, Object searchKey);
 
-    protected abstract void doDelete(String uuid);
+    protected abstract void doDelete(Object searchKey);
 
     protected abstract Resume doGet(Object searchKey);
 

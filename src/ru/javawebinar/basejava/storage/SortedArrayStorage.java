@@ -13,8 +13,8 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void saveResume(Resume r) {
-        int savingIndex = ((int) findSearchKey(r.getUuid()) + 1) * -1;
+    protected void saveResume(Resume r, Object searchKey) {
+        int savingIndex = ((int) searchKey + 1) * -1;
         System.arraycopy(storage, savingIndex, storage, savingIndex + 1, size - savingIndex);
         storage[savingIndex] = r;
     }
