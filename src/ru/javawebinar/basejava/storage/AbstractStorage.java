@@ -26,10 +26,6 @@ public abstract class AbstractStorage implements Storage {
         return doGet(searchKey);
     }
 
-    public Resume[] getAll() {
-        return doGetAll();
-    }
-
     private Object findExistingSearchKey(String uuid) {
         Object searchKey = findSearchKey(uuid);
         if (!isExist(searchKey)) {
@@ -57,6 +53,4 @@ public abstract class AbstractStorage implements Storage {
     protected abstract void doDelete(Object searchKey);
 
     protected abstract Resume doGet(Object searchKey);
-
-    protected abstract Resume[] doGetAll();
 }

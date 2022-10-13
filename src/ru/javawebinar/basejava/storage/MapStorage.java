@@ -3,10 +3,11 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
 
-    private final HashMap<String, Resume> storage = new HashMap<>();
+    private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
     public void clear() {
@@ -16,6 +17,11 @@ public class MapStorage extends AbstractStorage {
     @Override
     public int size() {
         return storage.size();
+    }
+
+    @Override
+    public Resume[] getAll() {
+        return storage.values().toArray(new Resume[0]);
     }
 
     @Override
@@ -46,10 +52,5 @@ public class MapStorage extends AbstractStorage {
     @Override
     protected Resume doGet(Object searchKey) {
         return storage.get((String) searchKey);
-    }
-
-    @Override
-    protected Resume[] doGetAll() {
-        return storage.values().toArray(new Resume[0]);
     }
 }
