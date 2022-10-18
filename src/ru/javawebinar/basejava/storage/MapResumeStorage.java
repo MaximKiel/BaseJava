@@ -3,30 +3,27 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ListStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage {
 
-    private final List<Resume> listStorage = new ArrayList<>();
+    private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
     public void clear() {
-        listStorage.clear();
+        storage.clear();
     }
 
     @Override
     public int size() {
-        return listStorage.size();
+        return storage.size();
     }
 
     @Override
     protected Object findSearchKey(String uuid) {
-        for (int i = 0; i < listStorage.size(); i++) {
-            if (uuid.equals(listStorage.get(i).getUuid())) {
-                return i;
-            }
-        }
-        return null;
+        return storage.get(uuid);
     }
 
     @Override
@@ -36,26 +33,28 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void doUpdate(Resume r, Object searchKey) {
-        listStorage.set((int) searchKey, r);
+        storage.replace(r.getUuid(), r);
     }
 
     @Override
     protected void doSave(Resume r, Object searchKey) {
-        listStorage.add(r);
+        storage.put(r.getUuid(), r);
     }
 
     @Override
     protected void doDelete(Object searchKey) {
-        listStorage.remove((int) searchKey);
+        Resume r = (Resume) searchKey;
+        storage.remove(r.getUuid());
     }
 
     @Override
     protected Resume doGet(Object searchKey) {
-        return listStorage.get((int) searchKey);
+        Resume r = (Resume) searchKey;
+        return storage.get(r.getUuid());
     }
 
     @Override
     protected List<Resume> doGetAll() {
-        return listStorage;
+        return new ArrayList<>(storage.values());
     }
 }
