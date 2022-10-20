@@ -33,7 +33,7 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected void doUpdate(Resume r, Object searchKey) {
-        storage.replace(r.getUuid(), r);
+        storage.put(r.getUuid(), r);
     }
 
     @Override
@@ -49,8 +49,7 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected Resume doGet(Object searchKey) {
-        Resume r = (Resume) searchKey;
-        return storage.get(r.getUuid());
+        return (Resume) searchKey;
     }
 
     @Override
