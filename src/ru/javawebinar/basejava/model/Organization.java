@@ -12,6 +12,9 @@ public class Organization {
     private final List<Period> periods = new ArrayList<>();
 
     public Organization(String name, String website, String title, String description, LocalDate startDate, LocalDate endDate) {
+        Objects.requireNonNull(startDate, "startDate must not be null");
+        Objects.requireNonNull(endDate, "endDate must not be null");
+        Objects.requireNonNull(title, "title must not be null");
         this.name = name;
         this.website = website;
         periods.add(new Period(title, description, startDate, endDate));

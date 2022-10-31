@@ -15,7 +15,7 @@ public class ResumeTestData {
         resume.addContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
         resume.addContact(ContactType.GITHUB, "https://github.com/gkislin");
         resume.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
-        resume.addContact(ContactType.HOMEPAGE, "http://gkislin.ru/");
+        resume.addContact(ContactType.HOME_PAGE, "http://gkislin.ru/");
 
         AbstractSection objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web " +
                 "и Enterprise технологиям");
@@ -98,7 +98,7 @@ public class ResumeTestData {
         System.out.println(ContactType.LINKEDIN.getTitle() + ": " + resume.getContact(ContactType.LINKEDIN));
         System.out.println(ContactType.GITHUB.getTitle() + ": " + resume.getContact(ContactType.GITHUB));
         System.out.println(ContactType.STACKOVERFLOW.getTitle() + ": " + resume.getContact(ContactType.STACKOVERFLOW));
-        System.out.println(ContactType.HOMEPAGE.getTitle() + ": " + resume.getContact(ContactType.HOMEPAGE) + "\n");
+        System.out.println(ContactType.HOME_PAGE.getTitle() + ": " + resume.getContact(ContactType.HOME_PAGE) + "\n");
 
         System.out.println(SectionType.OBJECTIVE.getTitle() + ":\n" + resume.getSection(SectionType.OBJECTIVE) + "\n");
         System.out.println(SectionType.PERSONAL.getTitle() + ":\n" + resume.getSection(SectionType.PERSONAL) + "\n");
