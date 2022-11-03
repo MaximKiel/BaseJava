@@ -6,8 +6,8 @@ import java.util.List;
 
 public class ResumeTestData {
 
-    public static void main(String[] args) {
-        Resume resume = new Resume("Григорий Кислин");
+    public Resume createResume(String uuid, String fullName) {
+        Resume resume = new Resume(uuid, fullName);
 
         resume.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
         resume.addContact(ContactType.SKYPE, "skype:grigory.kislin");
@@ -77,6 +77,17 @@ public class ResumeTestData {
                 null,
                 LocalDate.of(1984, 9, 1),
                 LocalDate.of(1987, 6, 1)));
+        Organization itmo = new Organization("Санкт-Петербургский национальный исследовательский университет " +
+                "информационных технологий, механики и оптики",
+                "http://www.ifmo.ru/",
+                "Инженер (программист Fortran, C)",
+                null,
+                LocalDate.of(1987, 9, 1),
+                LocalDate.of(1993, 7, 1));
+        itmo.setAdditionalPeriod("Аспирантура (программист С, С++)", null,
+                LocalDate.of(1993, 9, 1),
+                LocalDate.of(1996, 7, 1));
+        educationOrganizations.add(itmo);
         educationOrganizations.add(new Organization("Luxoft",
                 "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366",
                 "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'",
@@ -92,22 +103,23 @@ public class ResumeTestData {
         AbstractSection education = new OrganizationSection(educationOrganizations);
         resume.addSection(SectionType.EDUCATION, education);
 
-        System.out.println(ContactType.TELEPHONE.getTitle() + ": " + resume.getContact(ContactType.TELEPHONE));
-        System.out.println(ContactType.SKYPE.getTitle() + ": " + resume.getContact(ContactType.SKYPE));
-        System.out.println(ContactType.EMAIL.getTitle() + ": " + resume.getContact(ContactType.EMAIL));
-        System.out.println(ContactType.LINKEDIN.getTitle() + ": " + resume.getContact(ContactType.LINKEDIN));
-        System.out.println(ContactType.GITHUB.getTitle() + ": " + resume.getContact(ContactType.GITHUB));
-        System.out.println(ContactType.STACKOVERFLOW.getTitle() + ": " + resume.getContact(ContactType.STACKOVERFLOW));
-        System.out.println(ContactType.HOME_PAGE.getTitle() + ": " + resume.getContact(ContactType.HOME_PAGE) + "\n");
-
-        System.out.println(SectionType.OBJECTIVE.getTitle() + ":\n" + resume.getSection(SectionType.OBJECTIVE) + "\n");
-        System.out.println(SectionType.PERSONAL.getTitle() + ":\n" + resume.getSection(SectionType.PERSONAL) + "\n");
-        System.out.println(SectionType.ACHIEVEMENT.getTitle() + ":\n" +
-                resume.getSection(SectionType.ACHIEVEMENT) + "\n");
-        System.out.println(SectionType.QUALIFICATIONS.getTitle() + ":\n" +
-                resume.getSection(SectionType.QUALIFICATIONS) + "\n");
-        System.out.println(SectionType.EXPERIENCE.getTitle() + "\n" +
-                resume.getSection(SectionType.EXPERIENCE) + "\n");
-        System.out.println(SectionType.EDUCATION.getTitle() + ":\n" + resume.getSection(SectionType.EDUCATION) + "\n");
+        return resume;
+//        System.out.println(ContactType.TELEPHONE.getTitle() + ": " + resume.getContact(ContactType.TELEPHONE));
+//        System.out.println(ContactType.SKYPE.getTitle() + ": " + resume.getContact(ContactType.SKYPE));
+//        System.out.println(ContactType.EMAIL.getTitle() + ": " + resume.getContact(ContactType.EMAIL));
+//        System.out.println(ContactType.LINKEDIN.getTitle() + ": " + resume.getContact(ContactType.LINKEDIN));
+//        System.out.println(ContactType.GITHUB.getTitle() + ": " + resume.getContact(ContactType.GITHUB));
+//        System.out.println(ContactType.STACKOVERFLOW.getTitle() + ": " + resume.getContact(ContactType.STACKOVERFLOW));
+//        System.out.println(ContactType.HOME_PAGE.getTitle() + ": " + resume.getContact(ContactType.HOME_PAGE) + "\n");
+//
+//        System.out.println(SectionType.OBJECTIVE.getTitle() + ":\n" + resume.getSection(SectionType.OBJECTIVE) + "\n");
+//        System.out.println(SectionType.PERSONAL.getTitle() + ":\n" + resume.getSection(SectionType.PERSONAL) + "\n");
+//        System.out.println(SectionType.ACHIEVEMENT.getTitle() + ":\n" +
+//                resume.getSection(SectionType.ACHIEVEMENT) + "\n");
+//        System.out.println(SectionType.QUALIFICATIONS.getTitle() + ":\n" +
+//                resume.getSection(SectionType.QUALIFICATIONS) + "\n");
+//        System.out.println(SectionType.EXPERIENCE.getTitle() + "\n" +
+//                resume.getSection(SectionType.EXPERIENCE) + "\n");
+//        System.out.println(SectionType.EDUCATION.getTitle() + ":\n" + resume.getSection(SectionType.EDUCATION) + "\n");
     }
 }

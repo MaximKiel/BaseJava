@@ -20,6 +20,10 @@ public class Organization {
         periods.add(new Period(title, description, startDate, endDate));
     }
 
+    public void setAdditionalPeriod(String title, String description, LocalDate startDate, LocalDate endDate) {
+        periods.add(new Period(title, description, startDate, endDate));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
