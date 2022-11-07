@@ -5,7 +5,7 @@ import java.io.File;
 public class MainFile {
 
     public static void main(String[] args) {
-        File directory = new File("C:\\Users\\79883\\MyJava\\basejava\\src");
+        File directory = new File("..\\basejava\\src");
         printDirectory(directory);
     }
 

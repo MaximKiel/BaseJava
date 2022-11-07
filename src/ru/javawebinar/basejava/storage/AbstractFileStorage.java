@@ -39,7 +39,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         try {
             doWrite(r, searchKey);
         } catch (IOException e) {
-            throw new StorageException("IO error", searchKey.getName(), e);
+            throw new StorageException("IO update error", searchKey.getName(), e);
         }
     }
 
@@ -49,18 +49,24 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             searchKey.createNewFile();
             doWrite(r, searchKey);
         } catch (IOException e) {
-            throw new StorageException("IO error", searchKey.getName(), e);
+            throw new StorageException("IO save error", searchKey.getName(), e);
         }
     }
 
     @Override
     protected void doDelete(File searchKey) {
-        searchKey.delete();
+        if (!searchKey.delete()) {
+            throw new StorageException("File delete error", searchKey.getName());
+        }
     }
 
     @Override
     protected Resume doGet(File searchKey) {
-        return doRead(searchKey);
+        try {
+            return doRead(searchKey);
+        } catch (IOException e) {
+            throw new StorageException("IO doGet error", searchKey.getName(), e);
+        }
     }
 
     @Override
@@ -69,7 +75,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         File[] files = directory.listFiles();
         if (files != null) {
             for (File file : files) {
-                allFiles.add(doRead(file));
+                allFiles.add(doGet(file));
             }
         }
         return allFiles;
@@ -80,7 +86,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         File[] files = directory.listFiles();
         if (files != null) {
             for (File file : files) {
-                file.delete();
+                doDelete(file);
             }
         }
     }
@@ -96,5 +102,5 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     protected abstract void doWrite(Resume r, File searchKey) throws IOException;
 
-    protected abstract Resume doRead(File file);
+    protected abstract Resume doRead(File file) throws IOException;
 }
