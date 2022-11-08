@@ -13,6 +13,7 @@ import static ru.javawebinar.basejava.util.DateUtil.NOW;
 
 public class Organization implements Serializable {
 
+    private static final long serializableVersionUID = 1L;
     private final String name;
     private final String website;
     private final List<Period> periods;
@@ -51,6 +52,7 @@ public class Organization implements Serializable {
 
     public static class Period implements Serializable {
 
+        private static final long serializableVersionUID = 1L;
         private final String title;
         private final String description;
         private final LocalDate startDate;
