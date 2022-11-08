@@ -3,8 +3,7 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,7 +36,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume r, File searchKey) {
         try {
-            doWrite(r, searchKey);
+            doWrite(r, new BufferedOutputStream(new FileOutputStream(searchKey)));
         } catch (IOException e) {
             throw new StorageException("IO update error", searchKey.getName(), e);
         }
@@ -47,7 +46,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void doSave(Resume r, File searchKey) {
         try {
             searchKey.createNewFile();
-            doWrite(r, searchKey);
+            doWrite(r, new BufferedOutputStream(new FileOutputStream(searchKey)));
         } catch (IOException e) {
             throw new StorageException("IO save error", searchKey.getName(), e);
         }
@@ -63,7 +62,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected Resume doGet(File searchKey) {
         try {
-            return doRead(searchKey);
+            return doRead(new BufferedInputStream(new FileInputStream(searchKey)));
         } catch (IOException e) {
             throw new StorageException("IO doGet error", searchKey.getName(), e);
         }
@@ -100,7 +99,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         return 0;
     }
 
-    protected abstract void doWrite(Resume r, File searchKey) throws IOException;
+    protected abstract void doWrite(Resume r, OutputStream outputStream) throws IOException;
 
-    protected abstract Resume doRead(File file) throws IOException;
+    protected abstract Resume doRead(InputStream inputStream) throws IOException;
 }

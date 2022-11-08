@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.model;
 
 import ru.javawebinar.basejava.util.DateUtil;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
@@ -10,7 +11,7 @@ import java.util.Objects;
 
 import static ru.javawebinar.basejava.util.DateUtil.NOW;
 
-public class Organization {
+public class Organization implements Serializable {
 
     private final String name;
     private final String website;
@@ -48,7 +49,7 @@ public class Organization {
                 '}';
     }
 
-    public static class Period {
+    public static class Period implements Serializable {
 
         private final String title;
         private final String description;
