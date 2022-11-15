@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractFileStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
 
     private final File directory;
+    private final StreamStrategy storageStrategy;
 
-    protected AbstractFileStorage(File directory) {
+    protected FileStorage(File directory, StreamStrategy storageStrategy) {
         Objects.requireNonNull(directory, "directory must not be null");
+        Objects.requireNonNull(storageStrategy, "storageStrategy must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
         }
@@ -21,6 +23,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
         }
         this.directory = directory;
+        this.storageStrategy = storageStrategy;
     }
 
     @Override
@@ -29,42 +32,42 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected boolean isExist(File searchKey) {
-        return searchKey.exists();
+    protected boolean isExist(File file) {
+        return file.exists();
     }
 
     @Override
-    protected void doUpdate(Resume r, File searchKey) {
+    protected void doUpdate(Resume r, File file) {
         try {
-            doWrite(r, new BufferedOutputStream(new FileOutputStream(searchKey)));
+            storageStrategy.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("IO update error", searchKey.getName(), e);
+            throw new StorageException("IO update error", file.getName(), e);
         }
     }
 
     @Override
-    protected void doSave(Resume r, File searchKey) {
+    protected void doSave(Resume r, File file) {
         try {
-            searchKey.createNewFile();
-            doWrite(r, new BufferedOutputStream(new FileOutputStream(searchKey)));
+            file.createNewFile();
+            storageStrategy.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("IO save error", searchKey.getName(), e);
+            throw new StorageException("IO save error", file.getName(), e);
         }
     }
 
     @Override
-    protected void doDelete(File searchKey) {
-        if (!searchKey.delete()) {
-            throw new StorageException("File delete error", searchKey.getName());
+    protected void doDelete(File file) {
+        if (!file.delete()) {
+            throw new StorageException("File delete error", file.getName());
         }
     }
 
     @Override
-    protected Resume doGet(File searchKey) {
+    protected Resume doGet(File file) {
         try {
-            return doRead(new BufferedInputStream(new FileInputStream(searchKey)));
+            return storageStrategy.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("IO doGet error", searchKey.getName(), e);
+            throw new StorageException("IO doGet error", file.getName(), e);
         }
     }
 
@@ -98,8 +101,4 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         }
         return 0;
     }
-
-    protected abstract void doWrite(Resume r, OutputStream outputStream) throws IOException;
-
-    protected abstract Resume doRead(InputStream inputStream) throws IOException;
 }
