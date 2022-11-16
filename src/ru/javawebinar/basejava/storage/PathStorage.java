@@ -52,7 +52,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.createFile(path);
         } catch (IOException e) {
-            throw new StorageException("Path create file error", path.toFile().getName(), e);
+            throw new StorageException("Path create error", path.toFile().getName(), e);
         }
         doUpdate(r, path);
     }
