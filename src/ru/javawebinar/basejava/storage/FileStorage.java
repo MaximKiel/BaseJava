@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.strategy.StreamStrategy;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class FileStorage extends AbstractStorage<File> {
         try {
             storageStrategy.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("IO update error", file.getName(), e);
+            throw new StorageException("File update error", file.getName(), e);
         }
     }
 
@@ -49,10 +50,10 @@ public class FileStorage extends AbstractStorage<File> {
     protected void doSave(Resume r, File file) {
         try {
             file.createNewFile();
-            storageStrategy.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("IO save error", file.getName(), e);
+            throw new StorageException("IO create file error", file.getName(), e);
         }
+        doUpdate(r, file);
     }
 
     @Override
@@ -67,38 +68,36 @@ public class FileStorage extends AbstractStorage<File> {
         try {
             return storageStrategy.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("IO doGet error", file.getName(), e);
+            throw new StorageException("File doGet error", file.getName(), e);
         }
     }
 
     @Override
     protected List<Resume> doGetAll() {
         List<Resume> allFiles = new ArrayList<>();
-        File[] files = directory.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                allFiles.add(doGet(file));
-            }
+        for (File file : getFilesArray()) {
+            allFiles.add(doGet(file));
         }
         return allFiles;
     }
 
     @Override
     public void clear() {
-        File[] files = directory.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                doDelete(file);
-            }
+        for (File file : getFilesArray()) {
+            doDelete(file);
         }
     }
 
     @Override
     public int size() {
-        String[] list = directory.list();
-        if (list != null) {
-            return list.length;
+        return getFilesArray().length;
+    }
+
+    private File[] getFilesArray() {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            return files;
         }
-        return 0;
+        return new File[0];
     }
 }

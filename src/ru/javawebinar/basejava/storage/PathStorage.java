@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.strategy.StreamStrategy;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -19,12 +20,12 @@ public class PathStorage extends AbstractStorage<Path> {
 
     protected PathStorage(String directoryString, StreamStrategy storageStrategy) {
         directory = Paths.get(directoryString);
+        this.storageStrategy = storageStrategy;
         Objects.requireNonNull(directory, "directory must not be null");
         Objects.requireNonNull(storageStrategy, "storageStrategy must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(directoryString + " is not directory or is not writable");
         }
-        this.storageStrategy = storageStrategy;
     }
 
     @Override
@@ -50,10 +51,10 @@ public class PathStorage extends AbstractStorage<Path> {
     protected void doSave(Resume r, Path path) {
         try {
             Files.createFile(path);
-            storageStrategy.doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
-            throw new StorageException("Path update error", path.toFile().getName(), e);
+            throw new StorageException("Path create file error", path.toFile().getName(), e);
         }
+        doUpdate(r, path);
     }
 
     @Override
@@ -77,29 +78,25 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected List<Resume> doGetAll() {
         List<Resume> allFiles = new ArrayList<>();
-        try (Stream<Path> files = Files.list(directory)) {
-            files.forEach(searchKey -> allFiles.add(doGet(searchKey)));
-        } catch (IOException e) {
-            throw new StorageException("Path doGetAll error", null);
-        }
+        getFilesStream().forEach(searchKey -> allFiles.add(doGet(searchKey)));
         return allFiles;
     }
 
     @Override
     public void clear() {
-        try (Stream<Path> files = Files.list(directory)) {
-            files.forEach(this::doDelete);
-        } catch (IOException e) {
-            throw new StorageException("Path clear error", null);
-        }
+        getFilesStream().forEach(this::doDelete);
     }
 
     @Override
     public int size() {
-        try (Stream<Path> files = Files.list(directory)) {
-            return files.toList().size();
+        return getFilesStream().toList().size();
+    }
+
+    private Stream<Path> getFilesStream() {
+        try {
+            return Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("Path size error", null);
+            throw new StorageException("Path getFilesStream error", null);
         }
     }
 }
