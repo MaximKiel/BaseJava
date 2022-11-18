@@ -12,11 +12,11 @@ import java.util.Objects;
 public class FileStorage extends AbstractStorage<File> {
 
     private final File directory;
-    private final StreamStrategy storageStrategy;
+    private final StreamStrategy streamStrategy;
 
     protected FileStorage(File directory, StreamStrategy storageStrategy) {
         Objects.requireNonNull(directory, "directory must not be null");
-        Objects.requireNonNull(storageStrategy, "storageStrategy must not be null");
+        Objects.requireNonNull(storageStrategy, "streamStrategy must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
         }
@@ -24,7 +24,7 @@ public class FileStorage extends AbstractStorage<File> {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
         }
         this.directory = directory;
-        this.storageStrategy = storageStrategy;
+        this.streamStrategy = storageStrategy;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume r, File file) {
         try {
-            storageStrategy.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
+            streamStrategy.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("File update error", file.getName(), e);
         }
@@ -66,7 +66,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected Resume doGet(File file) {
         try {
-            return storageStrategy.doRead(new BufferedInputStream(new FileInputStream(file)));
+            return streamStrategy.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("File doGet error", file.getName(), e);
         }
