@@ -2,7 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.strategy.StreamStrategy;
+import ru.javawebinar.basejava.storage.strategy.StreamSerializer;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -18,13 +18,13 @@ import java.util.stream.Stream;
 public class PathStorage extends AbstractStorage<Path> {
 
     private final Path directory;
-    private final StreamStrategy streamStrategy;
+    private final StreamSerializer streamSerializer;
 
-    protected PathStorage(String directoryString, StreamStrategy storageStrategy) {
+    protected PathStorage(String directoryString, StreamSerializer storageStrategy) {
         Objects.requireNonNull(directoryString, "directory must not be null");
-        Objects.requireNonNull(storageStrategy, "streamStrategy must not be null");
+        Objects.requireNonNull(storageStrategy, "streamSerializer must not be null");
         directory = Paths.get(directoryString);
-        this.streamStrategy = storageStrategy;
+        this.streamSerializer = storageStrategy;
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(directoryString + " is not directory or is not writable");
         }
@@ -43,7 +43,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume r, Path path) {
         try {
-            streamStrategy.doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
+            streamSerializer.doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path write error", getFileName(path), e);
         }
@@ -71,7 +71,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path path) {
         try {
-            return streamStrategy.doRead(new BufferedInputStream(Files.newInputStream(path)));
+            return streamSerializer.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path doGet error", getFileName(path), e);
         }

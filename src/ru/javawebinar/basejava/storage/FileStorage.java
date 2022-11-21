@@ -2,7 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.strategy.StreamStrategy;
+import ru.javawebinar.basejava.storage.strategy.StreamSerializer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,11 +12,11 @@ import java.util.Objects;
 public class FileStorage extends AbstractStorage<File> {
 
     private final File directory;
-    private final StreamStrategy streamStrategy;
+    private final StreamSerializer streamSerializer;
 
-    protected FileStorage(File directory, StreamStrategy storageStrategy) {
+    protected FileStorage(File directory, StreamSerializer storageStrategy) {
         Objects.requireNonNull(directory, "directory must not be null");
-        Objects.requireNonNull(storageStrategy, "streamStrategy must not be null");
+        Objects.requireNonNull(storageStrategy, "streamSerializer must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
         }
@@ -24,7 +24,7 @@ public class FileStorage extends AbstractStorage<File> {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
         }
         this.directory = directory;
-        this.streamStrategy = storageStrategy;
+        this.streamSerializer = storageStrategy;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume r, File file) {
         try {
-            streamStrategy.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
+            streamSerializer.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("File update error", file.getName(), e);
         }
@@ -66,7 +66,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected Resume doGet(File file) {
         try {
-            return streamStrategy.doRead(new BufferedInputStream(new FileInputStream(file)));
+            return streamSerializer.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("File doGet error", file.getName(), e);
         }
