@@ -13,7 +13,8 @@ import org.junit.runner.RunWith;
         MapResumeStorageTest.class,
         FileStorageTest.class,
         PathStorageTest.class,
-        XmlPathStorageTest.class
+        XmlPathStorageTest.class,
+        JsonPathStorageTest.class
 })
 public class AllStorageTest {
 }
