@@ -105,7 +105,7 @@ public class DataStreamSerializer implements StreamSerializer {
 
                 );
                 }
-            default -> throw new IllegalStateException("Unexpected value: " + sectionType);
+            default -> throw new IllegalStateException("Read section error: " + sectionType);
         }
     }
 
