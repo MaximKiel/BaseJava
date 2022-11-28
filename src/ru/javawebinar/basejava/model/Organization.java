@@ -38,6 +38,23 @@ public class Organization implements Serializable {
         this.periods = periods;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public List<Period> getPeriods() {
+        return periods;
+    }
+
+    public int getSize() {
+        return periods.size();
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -87,9 +104,28 @@ public class Organization implements Serializable {
             Objects.requireNonNull(endDate, "endDate must not be null");
             Objects.requireNonNull(title, "title must not be null");
             this.title = title;
+            if (description == null) {
+                description = "";
+            }
             this.description = description;
             this.startDate = startDate;
             this.endDate = endDate;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public LocalDate getStartDate() {
+            return startDate;
+        }
+
+        public LocalDate getEndDate() {
+            return endDate;
         }
 
         @Override

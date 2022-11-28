@@ -25,6 +25,10 @@ public class OrganizationSection extends AbstractSection {
         return organizations;
     }
 
+    public int getSize() {
+        return organizations.size();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
