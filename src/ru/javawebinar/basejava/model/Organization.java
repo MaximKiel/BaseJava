@@ -33,7 +33,12 @@ public class Organization implements Serializable {
     }
 
     public Organization(String name, String website, List<Period> periods) {
+        Objects.requireNonNull(name, "name must not be null");
+        Objects.requireNonNull(periods, "periods must not be null");
         this.name = name;
+        if (website == null) {
+            website = "";
+        }
         this.website = website;
         this.periods = periods;
     }

@@ -41,10 +41,8 @@ public class DataStreamSerializer implements StreamSerializer {
                             writeList(dataOutputStream, organization.getPeriods(), period -> {
                                 dataOutputStream.writeUTF(period.getTitle());
                                 dataOutputStream.writeUTF(period.getDescription());
-                                dataOutputStream.writeInt(period.getStartDate().getYear());
-                                dataOutputStream.writeInt(period.getStartDate().getMonth().getValue());
-                                dataOutputStream.writeInt(period.getEndDate().getYear());
-                                dataOutputStream.writeInt(period.getEndDate().getMonth().getValue());
+                                writeLocalDate(dataOutputStream, period.getStartDate());
+                                writeLocalDate(dataOutputStream, period.getEndDate());
                             });
                         });
                     }
@@ -61,6 +59,11 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
+    private void writeLocalDate(DataOutputStream dataOutputStream, LocalDate date) throws IOException {
+        dataOutputStream.writeInt(date.getYear());
+        dataOutputStream.writeInt(date.getMonth().getValue());
+    }
+
     private interface WriterInterface<T> {
         void write(T t) throws IOException;
     }
@@ -73,16 +76,14 @@ public class DataStreamSerializer implements StreamSerializer {
 
             Resume resume = new Resume(uuid, fullName);
 
-            int sizeContacts = dataInputStream.readInt();
-            for (int i = 0; i < sizeContacts; i++) {
-                resume.addContact(ContactType.valueOf(dataInputStream.readUTF()), dataInputStream.readUTF());
-            }
+            readType(dataInputStream, () -> resume.addContact(ContactType.valueOf(dataInputStream.readUTF()),
+                    dataInputStream.readUTF()));
 
-            int sizeSections = dataInputStream.readInt();
-            for (int i = 0; i < sizeSections; i++) {
+            readType(dataInputStream, () -> {
                 SectionType sectionType = SectionType.valueOf(dataInputStream.readUTF());
                 resume.addSection(sectionType, readSection(sectionType, dataInputStream));
-            }
+            });
+
             return resume;
         }
     }
@@ -99,11 +100,8 @@ public class DataStreamSerializer implements StreamSerializer {
                 return new OrganizationSection(readList(dataInputStream,() ->
                         new Organization(dataInputStream.readUTF(), dataInputStream.readUTF(),
                                 readList(dataInputStream, () -> new Organization.Period(dataInputStream.readUTF(),
-                                        dataInputStream.readUTF(), LocalDate.of(dataInputStream.readInt(),
-                                        dataInputStream.readInt(), 1), LocalDate.of(dataInputStream.readInt(),
-                                        dataInputStream.readInt(), 1)))))
-
-                );
+                                        dataInputStream.readUTF(), readLocalDate(dataInputStream),
+                                        readLocalDate(dataInputStream))))));
                 }
             default -> throw new IllegalStateException("Read section error: " + sectionType);
         }
@@ -118,7 +116,22 @@ public class DataStreamSerializer implements StreamSerializer {
         return list;
     }
 
+    private void readType(DataInputStream dataInputStream, ReaderTypeInterface reader) throws IOException {
+        int size = dataInputStream.readInt();
+        for (int i = 0; i < size; i++) {
+            reader.read();
+        }
+    }
+
+    private LocalDate readLocalDate(DataInputStream dataInputStream) throws IOException {
+        return LocalDate.of(dataInputStream.readInt(), dataInputStream.readInt(), 1);
+    }
+
     private interface ReaderInterface<T> {
         T read() throws IOException;
+    }
+
+    private interface ReaderTypeInterface {
+        void read() throws IOException;
     }
 }
