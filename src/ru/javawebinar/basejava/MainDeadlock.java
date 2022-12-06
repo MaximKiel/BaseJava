@@ -6,37 +6,24 @@ public class MainDeadlock {
     private static final Object OBJECT_2 = new Object();
 
     public static void main(String[] args) {
-        Thread thread1 = new Thread(() -> {
-            synchronized (OBJECT_1) {
-                System.out.println("thread1 holds object1");
+        deadlock(OBJECT_1, OBJECT_2);
+        deadlock(OBJECT_2, OBJECT_1);
+    }
+
+    private static void deadlock(Object object1, Object object2) {
+        new Thread(() -> {
+            synchronized (object1) {
+                System.out.println("thread holds first object");
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                System.out.println("thread1 waits object2");
-                synchronized (OBJECT_2) {
-                    System.out.println("thread1 holds object2");
+                System.out.println("thread waits second object");
+                synchronized (object2) {
+                    System.out.println("thread holds second object");
                 }
             }
-        });
-
-        Thread thread2 = new Thread(() -> {
-            synchronized (OBJECT_2) {
-                System.out.println("thread2 holds object2");
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                System.out.println("thread2 waits object1");
-                synchronized (OBJECT_1) {
-                    System.out.println("thread2 holds object1");
-                }
-            }
-        });
-
-        thread1.start();
-        thread2.start();
+        }).start();
     }
 }
