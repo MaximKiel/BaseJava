@@ -3,7 +3,6 @@ package ru.javawebinar.basejava;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
@@ -26,10 +25,12 @@ public class MainStream {
     }
 
     private static int minValue(int[] values) {
-        Stream<Integer> integerStream = Arrays.stream(values).boxed();
-        final int[] result = {0};
-        integerStream.distinct().sorted().forEach(i -> result[0] = i + result[0] * 10);
-        return result[0];
+        IntStream integerStream = Arrays.stream(values);
+        int identity = 0;
+        return integerStream
+                .distinct()
+                .sorted()
+                .reduce(identity, (x, y) -> x * 10 + y);
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
