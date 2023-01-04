@@ -7,6 +7,7 @@ import ru.javawebinar.basejava.sql.SqlHelper;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class SqlStorage implements Storage {
@@ -29,10 +30,7 @@ public class SqlStorage implements Storage {
     public int size() {
         return helper.execute("SELECT count(*) FROM resume", preparedStatement -> {
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (!resultSet.next()) {
-                return 0;
-            }
-            return resultSet.getInt(1);
+            return resultSet.next() ? resultSet.getInt(1) : 0;
         });
     }
 
@@ -89,6 +87,7 @@ public class SqlStorage implements Storage {
             while (resultSet.next()) {
                 allResume.add(new Resume(resultSet.getString("uuid"), resultSet.getString("full_name")));
             }
+            allResume.sort(Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid));
             return allResume;
         });
     }
