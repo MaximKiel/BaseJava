@@ -1,5 +1,8 @@
 package ru.javawebinar.basejava;
 
+import ru.javawebinar.basejava.storage.SqlStorage;
+import ru.javawebinar.basejava.storage.Storage;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,11 +13,8 @@ public class Config {
 
     private static final File PROPERTIES = new File("config\\resumes.properties");
     private static final Config INSTANCE = new Config();
-    private Properties properties = new Properties();
-    private File storageDir;
-    private String dbUrl;
-    private String dbUser;
-    private String dbPassword;
+    private final File storageDir;
+    private final Storage storage;
 
     public static Config getInstance() {
         return INSTANCE;
@@ -24,25 +24,16 @@ public class Config {
         return storageDir;
     }
 
-    public String getDbUrl() {
-        return dbUrl;
-    }
-
-    public String getDbUser() {
-        return dbUser;
-    }
-
-    public String getDbPassword() {
-        return dbPassword;
+    public Storage getStorage() {
+        return storage;
     }
 
     private Config() {
         try (InputStream inputStream = new FileInputStream(PROPERTIES)){
+            Properties properties = new Properties();
             properties.load(inputStream);
             storageDir = new File(properties.getProperty("storage.dir"));
-            dbUrl = properties.getProperty("db.url");
-            dbUser = properties.getProperty("db.user");
-            dbPassword = properties.getProperty("db.password");
+            storage = new SqlStorage(properties.getProperty("db.url"), properties.getProperty("db.user"), properties.getProperty("db.password"));
         } catch (IOException e) {
             throw new IllegalStateException("Invalid config file " + PROPERTIES.getAbsolutePath());
         }

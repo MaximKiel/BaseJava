@@ -17,19 +17,16 @@ import static org.junit.jupiter.api.Assertions.*;
 public abstract class AbstractStorageTest {
 
     protected static final File STORAGE_DIR = Config.getInstance().getStorageDir();
-    protected static final String DB_URL = Config.getInstance().getDbUrl();
-    protected static final String DB_USER = Config.getInstance().getDbUser();
-    protected static final String DB_PASSWORD = Config.getInstance().getDbPassword();
     protected final Storage storage;
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
-    private static final String UUID_1 = String.valueOf(UUID.randomUUID());
-    private static final String UUID_2 = String.valueOf(UUID.randomUUID());
-    private static final String UUID_3 = String.valueOf(UUID.randomUUID());
-    private static final String UUID_4 = String.valueOf(UUID.randomUUID());
+    private static final String UUID_1 = UUID.randomUUID().toString();
+    private static final String UUID_2 = UUID.randomUUID().toString();
+    private static final String UUID_3 = UUID.randomUUID().toString();
+    private static final String UUID_4 = UUID.randomUUID().toString();
     private static final String DUMMY = "dummy";
 
     private static final String NAME_1 = "name1";
