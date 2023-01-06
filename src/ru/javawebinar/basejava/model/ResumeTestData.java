@@ -4,14 +4,14 @@ public class ResumeTestData {
 
     public Resume createResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
-//
-//        resume.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
-//        resume.addContact(ContactType.SKYPE, "skype:grigory.kislin");
-//        resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
-//        resume.addContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
-//        resume.addContact(ContactType.GITHUB, "https://github.com/gkislin");
-//        resume.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
-//        resume.addContact(ContactType.HOME_PAGE, "http://gkislin.ru/");
+
+        resume.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
+        resume.addContact(ContactType.SKYPE, "skype:grigory.kislin");
+        resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
+        resume.addContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
+        resume.addContact(ContactType.GITHUB, "https://github.com/gkislin");
+        resume.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
+        resume.addContact(ContactType.HOME_PAGE, "http://gkislin.ru/");
 //
 //        AbstractSection objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web " +
 //                "и Enterprise технологиям");
