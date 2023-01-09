@@ -44,11 +44,10 @@ public class SqlStorage implements Storage {
                     throw new NotExistStorageException(r.getUuid());
                 }
             }
-            helper.execute("DELETE FROM contact WHERE resume_uuid = ?", preparedStatement -> {
+            try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM contact WHERE resume_uuid = ?")) {
                 preparedStatement.setString(1, r.getUuid());
                 preparedStatement.execute();
-                return null;
-            });
+            }
             insertContacts(r, connection);
             return null;
         });
