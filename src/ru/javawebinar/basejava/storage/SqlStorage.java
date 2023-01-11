@@ -1,14 +1,15 @@
 package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.model.ContactType;
-import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static ru.javawebinar.basejava.model.SectionType.*;
 
 public class SqlStorage implements Storage {
 
@@ -48,7 +49,12 @@ public class SqlStorage implements Storage {
                 preparedStatement.setString(1, r.getUuid());
                 preparedStatement.execute();
             }
+            try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM section WHERE resume_uuid = ?")) {
+                preparedStatement.setString(1, r.getUuid());
+                preparedStatement.execute();
+            }
             insertContacts(r, connection);
+            insertSections(r, connection);
             return null;
         });
     }
@@ -62,6 +68,7 @@ public class SqlStorage implements Storage {
                 preparedStatement.execute();
             }
             insertContacts(r, connection);
+            insertSections(r, connection);
             return null;
         });
     }
@@ -144,4 +151,76 @@ public class SqlStorage implements Storage {
             preparedStatement.executeBatch();
         }
     }
+
+    private static void addTextSections(ResultSet resultSet, Resume resume) throws SQLException {
+        String value = resultSet.getString("value");
+        if (value != null) {
+            SectionType type = SectionType.valueOf(resultSet.getString("type"));
+            resume.addSection(type, new TextSection(value));
+        }
+    }
+
+    private static void insertSections(Resume r, Connection connection) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO section (resume_uuid, type, value) VALUES (?, ?, ?)")) {
+            for (Map.Entry<SectionType, AbstractSection> e : r.getSections().entrySet()) {
+                preparedStatement.setString(1, r.getUuid());
+                String sectionName = e.getKey().name();
+                preparedStatement.setString(2, sectionName);
+
+                if (sectionName.equals(PERSONAL.getTitle()) || sectionName.equals(OBJECTIVE.getTitle())) {
+                    preparedStatement.setString(3, String.valueOf(e.getValue()));
+                } else if (sectionName.equals(ACHIEVEMENT.getTitle()) || sectionName.equals(QUALIFICATIONS.getTitle())) {
+                    List<String> listSectionValue = ((ListSection) e.getValue()).get();
+                    int count = listSectionValue.size();
+                    StringBuilder sectionValue = new StringBuilder();
+                    for (String value : listSectionValue) {
+                        count--;
+                        if (count > 1) {
+                            sectionValue.append(value).append("\n");
+                        } else {
+                            sectionValue.append(value);
+                        }
+                    }
+                    preparedStatement.setString(3, String.valueOf(sectionValue));
+                }
+
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+        }
+    }
+
+    private static void addListSections(ResultSet resultSet, Resume resume) throws SQLException {
+        String value = resultSet.getString("value");
+        if (value != null) {
+            String[] valueArray = value.split("\n");
+            SectionType type = SectionType.valueOf(resultSet.getString("type"));
+            resume.addSection(type, new ListSection(valueArray));
+        }
+    }
+
+//    private static void insertListSections(Resume r, Connection connection) throws SQLException {
+//        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO section (resume_uuid, type, value) VALUES (?, ?, ?)")) {
+//            for (Map.Entry<SectionType, AbstractSection> e : r.getSections().entrySet()) {
+//                preparedStatement.setString(1, r.getUuid());
+//                preparedStatement.setString(2, e.getKey().name());
+//
+//                List<String> listSectionValue = ((ListSection) e.getValue()).get();
+//                int count = listSectionValue.size();
+//                StringBuilder sectionValue = new StringBuilder();
+//                for (String value : listSectionValue) {
+//                    count--;
+//                    if (count > 1) {
+//                        sectionValue.append(value).append("\n");
+//                    } else {
+//                        sectionValue.append(value);
+//                    }
+//                }
+//
+//                preparedStatement.setString(3, String.valueOf(sectionValue));
+//                preparedStatement.addBatch();
+//            }
+//            preparedStatement.executeBatch();
+//        }
+//    }
 }

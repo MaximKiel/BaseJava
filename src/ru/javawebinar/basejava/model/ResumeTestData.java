@@ -12,34 +12,34 @@ public class ResumeTestData {
         resume.addContact(ContactType.GITHUB, "https://github.com/gkislin");
         resume.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
         resume.addContact(ContactType.HOME_PAGE, "http://gkislin.ru/");
-//
-//        AbstractSection objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web " +
-//                "и Enterprise технологиям");
-//        resume.addSection(SectionType.OBJECTIVE, objective);
-//
-//        AbstractSection personal = new TextSection("Аналитический склад ума, сильная логика, креативность, " +
-//                "инициативность. Пурист кода и архитектуры.");
-//        resume.addSection(SectionType.PERSONAL, personal);
-//
-//        AbstractSection achievement = new ListSection(
-//                "Реализация протоколов по приему платежей всех основных платежных системы России " +
-//                        "(Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.",
-//                "Реализация c нуля Rich Internet Application приложения на стеке технологий JPA, Spring, " +
-//                        "Spring-MVC, GWT, ExtGWT (GXT), Commet, HTML5, Highstock для алгоритмического трейдинга.",
-//                "Реализация двухфакторной аутентификации для онлайн платформы управления " +
-//                        "проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk."
-//        );
-//        resume.addSection(SectionType.ACHIEVEMENT, achievement);
-//
-//        AbstractSection qualifications = new ListSection(
-//                "Родной русский, английский 'upper intermediate'",
-//                "Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектирования, " +
-//                        "архитектурных шаблонов, UML, функционального программирования",
-//                "Технологии: Servlet, JSP/JSTL, JAX-WS, REST, EJB, RMI, JMS, JavaMail, JAXB, StAX, " +
-//                        "SAX, DOM, XSLT, MDB, JMX, JDBC, JPA, JNDI, JAAS, SOAP, AJAX, Commet, HTML5, ESB, CMIS, " +
-//                        "BPMN2, LDAP, OAuth1, OAuth2, JWT."
-//        );
-//        resume.addSection(SectionType.QUALIFICATIONS, qualifications);
+
+        AbstractSection objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web " +
+                "и Enterprise технологиям");
+        resume.addSection(SectionType.OBJECTIVE, objective);
+
+        AbstractSection personal = new TextSection("Аналитический склад ума, сильная логика, креативность, " +
+                "инициативность. Пурист кода и архитектуры.");
+        resume.addSection(SectionType.PERSONAL, personal);
+
+        AbstractSection achievement = new ListSection(
+                "Реализация протоколов по приему платежей всех основных платежных системы России " +
+                        "(Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.",
+                "Реализация c нуля Rich Internet Application приложения на стеке технологий JPA, Spring, " +
+                        "Spring-MVC, GWT, ExtGWT (GXT), Commet, HTML5, Highstock для алгоритмического трейдинга.",
+                "Реализация двухфакторной аутентификации для онлайн платформы управления " +
+                        "проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk."
+        );
+        resume.addSection(SectionType.ACHIEVEMENT, achievement);
+
+        AbstractSection qualifications = new ListSection(
+                "Родной русский, английский 'upper intermediate'",
+                "Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектирования, " +
+                        "архитектурных шаблонов, UML, функционального программирования",
+                "Технологии: Servlet, JSP/JSTL, JAX-WS, REST, EJB, RMI, JMS, JavaMail, JAXB, StAX, " +
+                        "SAX, DOM, XSLT, MDB, JMX, JDBC, JPA, JNDI, JAAS, SOAP, AJAX, Commet, HTML5, ESB, CMIS, " +
+                        "BPMN2, LDAP, OAuth1, OAuth2, JWT."
+        );
+        resume.addSection(SectionType.QUALIFICATIONS, qualifications);
 //
 //        AbstractSection experience = new OrganizationSection(
 //                new Organization("Alcatel", "http://www.alcatel.ru/",
