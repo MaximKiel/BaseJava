@@ -99,9 +99,9 @@ public class SqlStorage implements Storage {
                         throw new NotExistStorageException(uuid);
                     }
                     resume = new Resume(uuid, resultSet.getString("full_name"));
-                    do {
+                    while (resultSet.next()){
                         addContacts(resultSet, resume);
-                    } while (resultSet.next());
+                    }
                 }
 
                 try (PreparedStatement preparedStatement = connection.prepareStatement("" +
@@ -114,9 +114,9 @@ public class SqlStorage implements Storage {
                     if (!resultSet.next()) {
                         throw new NotExistStorageException(uuid);
                     }
-                    do {
+                    while (resultSet.next()){
                         addSections(resultSet, resume);
-                    } while (resultSet.next());
+                    }
                     preparedStatement.executeBatch();
                 }
                 return resume;
