@@ -89,31 +89,28 @@ public class SqlStorage implements Storage {
         return helper.transactionalExecute(connection -> {
                 Resume resume;
                 try (PreparedStatement preparedStatement = connection.prepareStatement("" +
-                       "   SELECT * FROM resume r " +
-                        "LEFT JOIN contact c " +
-                        "       ON r.uuid = c.resume_uuid " +
-                        "    WHERE r.uuid = ?")) {
+                        "SELECT * FROM resume WHERE uuid = ?")) {
                     preparedStatement.setString(1, uuid);
                     ResultSet resultSet = preparedStatement.executeQuery();
                     if (!resultSet.next()) {
                         throw new NotExistStorageException(uuid);
                     }
                     resume = new Resume(uuid, resultSet.getString("full_name"));
+                }
+
+                try (PreparedStatement preparedStatement = connection.prepareStatement("" +
+                        "SELECT * FROM contact WHERE resume_uuid = ?")) {
+                    preparedStatement.setString(1, uuid);
+                    ResultSet resultSet = preparedStatement.executeQuery();
                     while (resultSet.next()){
                         addContacts(resultSet, resume);
                     }
                 }
 
                 try (PreparedStatement preparedStatement = connection.prepareStatement("" +
-                        "   SELECT * FROM resume r " +
-                        "LEFT JOIN section s " +
-                        "       ON r.uuid = s.resume_uuid " +
-                        "    WHERE r.uuid = ?")) {
+                        "SELECT * FROM section WHERE resume_uuid = ?")) {
                     preparedStatement.setString(1, uuid);
                     ResultSet resultSet = preparedStatement.executeQuery();
-                    if (!resultSet.next()) {
-                        throw new NotExistStorageException(uuid);
-                    }
                     while (resultSet.next()){
                         addSections(resultSet, resume);
                     }
@@ -127,7 +124,7 @@ public class SqlStorage implements Storage {
     public List<Resume> getAllSorted() {
         List<Resume> allResumes = new ArrayList<>();
         helper.transactionalExecute(connection -> {
-            try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM resume r ORDER BY r.full_name")) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM resume ORDER BY full_name")) {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
                     Resume resume = new Resume(resultSet.getString("uuid"), resultSet.getString("full_name"));
@@ -187,7 +184,7 @@ public class SqlStorage implements Storage {
                     StringBuilder sectionValue = new StringBuilder();
                     for (String value : listSectionValue) {
                         count--;
-                        if (count > 1) {
+                        if (count > 0) {
                             sectionValue.append(value).append("\n");
                         } else {
                             sectionValue.append(value);
@@ -195,7 +192,6 @@ public class SqlStorage implements Storage {
                     }
                     preparedStatement.setString(3, String.valueOf(sectionValue));
                 }
-
                 preparedStatement.addBatch();
             }
             preparedStatement.executeBatch();
@@ -213,11 +209,10 @@ public class SqlStorage implements Storage {
     private static void addSections(ResultSet resultSet, Resume resume) throws SQLException {
         String value = resultSet.getString("value");
         if (value != null) {
-            String stringType = resultSet.getString("type");
-            SectionType type = SectionType.valueOf(stringType);
-            if (stringType.equals(PERSONAL.getTitle()) || stringType.equals(OBJECTIVE.getTitle())) {
+            SectionType type = SectionType.valueOf(resultSet.getString("type"));
+            if (type.equals(PERSONAL) || type.equals(OBJECTIVE)) {
                 resume.addSection(type, new TextSection(value));
-            } else if (stringType.equals(ACHIEVEMENT.getTitle()) || stringType.equals(QUALIFICATIONS.getTitle())) {
+            } else if (type.equals(ACHIEVEMENT) || type.equals(QUALIFICATIONS)) {
                 String[] valueArray = value.split("\n");
                 resume.addSection(type, new ListSection(valueArray));
             }

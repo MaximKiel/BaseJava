@@ -10,6 +10,7 @@ import ru.javawebinar.basejava.model.ResumeTestData;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -86,9 +87,10 @@ public abstract class AbstractStorageTest {
 
     @Test
     void getAllSorted() {
-        Resume[] expected = {RESUME_1, RESUME_2, RESUME_3};
+        List<Resume> expected = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        List<Resume> result = storage.getAllSorted();
         assertSize(3);
-        assertEquals(storage.getAllSorted(), Arrays.asList(expected));
+        assertEquals(expected, result);
     }
 
     @Test

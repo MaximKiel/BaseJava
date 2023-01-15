@@ -20,14 +20,6 @@ public class Config {
         return INSTANCE;
     }
 
-    public File getStorageDir() {
-        return storageDir;
-    }
-
-    public Storage getStorage() {
-        return storage;
-    }
-
     private Config() {
         try (InputStream inputStream = new FileInputStream(PROPERTIES)){
             Properties properties = new Properties();
@@ -37,5 +29,13 @@ public class Config {
         } catch (IOException e) {
             throw new IllegalStateException("Invalid config file " + PROPERTIES.getAbsolutePath());
         }
+    }
+
+    public File getStorageDir() {
+        return storageDir;
+    }
+
+    public Storage getStorage() {
+        return storage;
     }
 }
