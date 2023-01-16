@@ -11,7 +11,7 @@ import java.util.Properties;
 
 public class Config {
 
-    private static final File PROPERTIES = new File("config\\resumes.properties");
+    private static final File PROPERTIES = new File("C:\\Users\\79883\\MyJava\\basejava\\config\\resumes.properties");
     private static final Config INSTANCE = new Config();
     private final File storageDir;
     private final Storage storage;

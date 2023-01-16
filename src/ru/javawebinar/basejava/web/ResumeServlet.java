@@ -13,13 +13,7 @@ import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
 
-    private Storage storage;
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        storage = Config.getInstance().getStorage();
-    }
+    private final Storage storage = Config.getInstance().getStorage();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -33,18 +27,15 @@ public class ResumeServlet extends HttpServlet {
         List<Resume> allResumes = storage.getAllSorted();
         for (Resume resume : allResumes) {
             response.getWriter().write("<table>\n" +
-                    "  <tr>\n" +
-                    "    <td>" + resume.getUuid() + "</td>\n" +
-                    "  </tr>\n" +
-                    "  <tr>\n" +
-                    "    <td>" + resume.getFullName() + "</td>\n" +
-                    "  </tr>\n" +
+                    "  <tr>" +
+                    "    <td>" + resume.getUuid() + "</td>" +
+                    "    <td>" + resume.getFullName() + "</td>" +
+                    "  </tr>" +
                     "</table>");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }
