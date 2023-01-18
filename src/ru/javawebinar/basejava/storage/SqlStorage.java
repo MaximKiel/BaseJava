@@ -185,17 +185,7 @@ public class SqlStorage implements Storage {
                     preparedStatement.setString(3, String.valueOf(e.getValue()));
                 } else if (sectionName.equals(ACHIEVEMENT.getTitle()) || sectionName.equals(QUALIFICATIONS.getTitle())) {
                     List<String> listSectionValue = ((ListSection) e.getValue()).get();
-                    int count = listSectionValue.size();
-                    StringBuilder sectionValue = new StringBuilder();
-                    for (String value : listSectionValue) {
-                        count--;
-                        if (count > 0) {
-                            sectionValue.append(value).append("\n");
-                        } else {
-                            sectionValue.append(value);
-                        }
-                    }
-                    preparedStatement.setString(3, String.valueOf(sectionValue));
+                    preparedStatement.setString(3, String.join("\n", listSectionValue));
                 }
                 preparedStatement.addBatch();
             }

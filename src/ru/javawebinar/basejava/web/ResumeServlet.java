@@ -13,7 +13,13 @@ import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
 
-    private final Storage storage = Config.getInstance().getStorage();
+    private Storage storage;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        storage = Config.getInstance().getStorage();
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
