@@ -6,14 +6,13 @@ import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.model.ResumeTestData;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.javawebinar.basejava.TestData.*;
 
 public abstract class AbstractStorageTest {
 
@@ -23,23 +22,6 @@ public abstract class AbstractStorageTest {
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
-
-    private static final String UUID_1 = UUID.randomUUID().toString();
-    private static final String UUID_2 = UUID.randomUUID().toString();
-    private static final String UUID_3 = UUID.randomUUID().toString();
-    private static final String UUID_4 = UUID.randomUUID().toString();
-    private static final String DUMMY = "dummy";
-
-    private static final String NAME_1 = "name1";
-    private static final String NAME_2 = "name2";
-    private static final String NAME_3 = "name3";
-    private static final String NAME_4 = "name4";
-
-    private static final ResumeTestData RESUME_TEST_DATA = new ResumeTestData();
-    private static final Resume RESUME_1 = RESUME_TEST_DATA.createResume(UUID_1, NAME_1);
-    private static final Resume RESUME_2 = RESUME_TEST_DATA.createResume(UUID_2, NAME_2);
-    private static final Resume RESUME_3 = RESUME_TEST_DATA.createResume(UUID_3, NAME_3);
-    private static final Resume RESUME_4 = RESUME_TEST_DATA.createResume(UUID_4, NAME_4);
 
     @BeforeEach
     public void setUp() {

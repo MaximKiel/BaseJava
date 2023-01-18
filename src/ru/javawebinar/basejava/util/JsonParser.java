@@ -9,7 +9,7 @@ import java.io.Writer;
 
 public class JsonParser {
 
-    private static Gson GSON = new GsonBuilder()
+    private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(AbstractSection.class, new JsonSectionAdapter())
             .create();
 
@@ -19,5 +19,13 @@ public class JsonParser {
 
     public static <T> void write(T object, Writer writer) {
         GSON.toJson(object, writer);
+    }
+
+    public static <T> T read(String string, Class<T> clazz) {
+        return GSON.fromJson(string, clazz);
+    }
+
+    public static <T> String write(T object, Class<T> clazz) {
+        return GSON.toJson(object, clazz);
     }
 }
