@@ -1,5 +1,7 @@
 package ru.javawebinar.basejava.model;
 
+import java.time.Month;
+
 public class ResumeTestData {
 
     public Resume createResume(String uuid, String fullName) {
@@ -40,41 +42,41 @@ public class ResumeTestData {
                         "BPMN2, LDAP, OAuth1, OAuth2, JWT."
         );
         resume.addSection(SectionType.QUALIFICATIONS, qualifications);
-//
-//        AbstractSection experience = new OrganizationSection(
-//                new Organization("Alcatel", "http://www.alcatel.ru/",
-//                        new Organization.Period("Инженер по аппаратному и программному тестированию", "Тестирование, отладка, внедрение ПО цифровой телефонной станции ",
-//                                1997, Month.SEPTEMBER, 2005, Month.JANUARY)),
-//                new Organization("Siemens AG", "https://www.siemens.com/ru/ru/home.html",
-//                        new Organization.Period("Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix).", null,
-//                                2005, Month.JANUARY, 2007, Month.FEBRUARY)),
-//                new Organization("Enkata", "http://enkata.com/",
-//                        new Organization.Period("Разработчик ПО", "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей кластерного J2EE приложения (OLAP, Data mining).",
-//                                2007, Month.MARCH, 2008, Month.JUNE)),
-//                new Organization("Java Online Projects", "http://javaops.ru/",
-//                        new Organization.Period("Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок",
-//                                2013, Month.OCTOBER))
-//        );
-//        resume.addSection(SectionType.EXPERIENCE, experience);
-//
-//        AbstractSection education = new OrganizationSection(
-//                new Organization("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/",
-//                        new Organization.Period("Закончил с отличием", null,
-//                                1984, Month.SEPTEMBER, 1987, Month.JUNE)),
-//                new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/",
-//                        new Organization.Period("Инженер (программист Fortran, C)", null,
-//                                1987, Month.SEPTEMBER, 1993, Month.JULY),
-//                        new Organization.Period("Аспирантура (программист С, С++)", null,
-//                                1993, Month.SEPTEMBER, 1996, Month.JULY)),
-//                new Organization("Luxoft", "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366",
-//                        new Organization.Period("Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'", null,
-//                                2011, Month.MARCH, 2011, Month.APRIL)),
-//                new Organization("Coursera", "https://www.coursera.org/course/progfun",
-//                        new Organization.Period("'Functional Programming Principles in Scala' by Martin Odersky", null,
-//                                2013, Month.MARCH, 2013, Month.MAY))
-//        );
-//        resume.addSection(SectionType.EDUCATION, education);
-//
+
+        AbstractSection experience = new OrganizationSection(
+                new Organization("Alcatel", "http://www.alcatel.ru/",
+                        new Organization.Period("Инженер по аппаратному и программному тестированию", "Тестирование, отладка, внедрение ПО цифровой телефонной станции ",
+                                1997, Month.SEPTEMBER, 2005, Month.JANUARY)),
+                new Organization("Siemens AG", "https://www.siemens.com/ru/ru/home.html",
+                        new Organization.Period("Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix).", null,
+                                2005, Month.JANUARY, 2007, Month.FEBRUARY)),
+                new Organization("Enkata", "http://enkata.com/",
+                        new Organization.Period("Разработчик ПО", "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей кластерного J2EE приложения (OLAP, Data mining).",
+                                2007, Month.MARCH, 2008, Month.JUNE)),
+                new Organization("Java Online Projects", "http://javaops.ru/",
+                        new Organization.Period("Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок",
+                                2013, Month.OCTOBER))
+        );
+        resume.addSection(SectionType.EXPERIENCE, experience);
+
+        AbstractSection education = new OrganizationSection(
+                new Organization("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/",
+                        new Organization.Period("Закончил с отличием", null,
+                                1984, Month.SEPTEMBER, 1987, Month.JUNE)),
+                new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/",
+                        new Organization.Period("Инженер (программист Fortran, C)", null,
+                                1987, Month.SEPTEMBER, 1993, Month.JULY),
+                        new Organization.Period("Аспирантура (программист С, С++)", null,
+                                1993, Month.SEPTEMBER, 1996, Month.JULY)),
+                new Organization("Luxoft", "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366",
+                        new Organization.Period("Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'", null,
+                                2011, Month.MARCH, 2011, Month.APRIL)),
+                new Organization("Coursera", "https://www.coursera.org/course/progfun",
+                        new Organization.Period("'Functional Programming Principles in Scala' by Martin Odersky", null,
+                                2013, Month.MARCH, 2013, Month.MAY))
+        );
+        resume.addSection(SectionType.EDUCATION, education);
+
         return resume;
     }
 }
