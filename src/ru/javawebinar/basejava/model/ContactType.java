@@ -3,8 +3,18 @@ package ru.javawebinar.basejava.model;
 public enum ContactType {
 
     TELEPHONE ("Тел."),
-    SKYPE ("Профиль Skype"),
-    EMAIL ("Почта"),
+    SKYPE ("Профиль Skype") {
+        @Override
+        public String toHtmlNotNull(String value) {
+            return "<a href='skype:" + value + "'>" + value + "</a>";
+        }
+    },
+    EMAIL ("Почта") {
+        @Override
+        public String toHtmlNotNull(String value) {
+            return "<a href='mailto:" + value + "'>" + value + "</a>";
+        }
+    },
     LINKEDIN ("Профиль LinkedIn"),
     GITHUB ("Профиль GitHub"),
     STACKOVERFLOW ("Профиль StackOverflow"),
@@ -18,5 +28,13 @@ public enum ContactType {
 
     public String getTitle() {
         return title;
+    }
+
+    public String toHtmlNotNull(String value) {
+        return title + ": " + value;
+    }
+
+    public String toHtml(String value) {
+        return value == null ? "" : toHtmlNotNull(value);
     }
 }

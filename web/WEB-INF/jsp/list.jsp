@@ -1,5 +1,5 @@
 <%@ page import="ru.javawebinar.basejava.model.ContactType" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
@@ -14,14 +14,18 @@
         <tr>
             <th>Имя</th>
             <th>Email</th>
-            <c:forEach items="${resume}" var="resume">
-                <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume"/>
-        <tr>
-            <td><a href="resume?uuid=${resume.uuid}">&{resume.fullName}</a></td>
-            <td>${resume.getContact(ContactType.EMAIL)}</td>
+            <th>Email</th>
+            <th>Email</th>
         </tr>
+        <c:forEach items="${allResumes}" var="resume">
+            <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume"/>
+            <tr>
+                <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
+                <td><%=ContactType.EMAIL.toHtml(resume.getContact(ContactType.EMAIL))%></td>
+                <td><a href="resume?uuid=${resume.uuid}&action=delete">Delete</a></td>
+                <td><a href="resume?uuid=${resume.uuid}&action=edit">Edit</a></td>
+            </tr>
         </c:forEach>
-        </tr>
     </table>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
