@@ -16,7 +16,7 @@
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <dl>
             <dt>Имя:</dt>
-            <dd><input type="text" name="name" size=50 value="${resume.fullName}"></dd>
+            <dd><input type="text" name="fullName" size=50 value="${resume.fullName}"></dd>
         </dl>
         <h3>Контакты:</h3>
         <p>
@@ -27,6 +27,11 @@
         </dl>
         </c:forEach>
         </p>
+        <h3>Секции:</h3>
+        <input type="text" name="section" size=30 value="1"><br/>
+        <input type="text" name="section" size=30 value="2"><br/>
+        <input type="text" name="section" size=30 value="3"><br/>
+        <input type="text" name="section" size=30 value="4"><br/>
         <hr>
         <button type="submit">Сохранить</button>
         <button onclick="window.history.back()">Отменить</button>
