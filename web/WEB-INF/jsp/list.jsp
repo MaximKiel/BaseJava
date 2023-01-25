@@ -14,16 +14,16 @@
         <tr>
             <th>Имя</th>
             <th>Email</th>
-            <th>Email</th>
-            <th>Email</th>
+            <th>Delete</th>
+            <th>Edit</th>
         </tr>
         <c:forEach items="${allResumes}" var="resume">
             <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume"/>
             <tr>
                 <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
                 <td><%=ContactType.EMAIL.toHtml(resume.getContact(ContactType.EMAIL))%></td>
-                <td><a href="resume?uuid=${resume.uuid}&action=delete">Delete</a></td>
-                <td><a href="resume?uuid=${resume.uuid}&action=edit">Edit</a></td>
+                <td><a href="resume?uuid=${resume.uuid}&action=delete"><img src="img/delete.png"></a></td>
+                <td><a href="resume?uuid=${resume.uuid}&action=edit"><img src="img/pencil.png"></a></td>
             </tr>
         </c:forEach>
     </table>

@@ -1,0 +1,61 @@
+header {
+    background: none repeat scroll 0 0 #A6C9E2;
+    color: #2E6E9E;
+    font-size: 20px;
+    padding: 5px 20px;
+}
+
+footer {
+    background: none repeat scroll 0 0 #A6C9E2;
+    color: #2E6E9E;
+    font-size: 20px;
+    padding: 5px 20px;
+    margin: 20px 0;
+}
+
+dl {
+    background: none repeat scroll 0 0 #FAFAFA;
+    margin: 8px 0;
+    padding: 0;
+}
+
+dt {
+    display: inline-block;
+    width: 170px;
+}
+
+dd {
+    display: inline-block;
+    margin-left: 8px;
+    vertical-align: top;
+}
+
+a[href^="skype:"] {
+    padding-left: 20px !important;
+    background: url(../img/skype.png) no-repeat center left;
+}
+
+a[href^="email:"] {
+    padding-left: 20px !important;
+    background: url(../img/email.png) no-repeat center left;
+}
+
+a[href^="stackOverflow"] {
+    padding-left: 20px !important;
+    background: url(../img/stackOverflow.png) no-repeat center left;
+}
+
+a[href^="linkedIn"] {
+    padding-left: 20px !important;
+    background: url(../img/linkedIn.png) no-repeat center left;
+}
+
+a[href*="gitHub"] {
+    padding-left: 20px !important;
+    background: url(../img/gitHub.png) no-repeat center left;
+}
+
+a[href*="homePage"] {
+    padding-left: 20px !important;
+    background: url(../img/homePage.png) no-repeat center left;
+}

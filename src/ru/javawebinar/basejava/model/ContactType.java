@@ -12,13 +12,33 @@ public enum ContactType {
     EMAIL ("Почта") {
         @Override
         public String toHtmlNotNull(String value) {
-            return "<a href='mailto:" + value + "'>" + value + "</a>";
+            return "<a href='email:" + value + "'>" + value + "</a>";
         }
     },
-    LINKEDIN ("Профиль LinkedIn"),
-    GITHUB ("Профиль GitHub"),
-    STACKOVERFLOW ("Профиль StackOverflow"),
-    HOME_PAGE("Домашняя страница");
+    LINKEDIN ("Профиль LinkedIn") {
+        @Override
+        public String toHtmlNotNull(String value) {
+            return "<a href='linkedIn:" + value + "'>" + value + "</a>";
+        }
+    },
+    GITHUB ("Профиль GitHub") {
+        @Override
+        public String toHtmlNotNull(String value) {
+            return "<a href='gitHub:" + value + "'>" + value + "</a>";
+        }
+    },
+    STACKOVERFLOW ("Профиль StackOverflow") {
+        @Override
+        public String toHtmlNotNull(String value) {
+            return "<a href='stackOverflow:" + value + "'>" + value + "</a>";
+        }
+    },
+    HOME_PAGE("Домашняя страница") {
+        @Override
+        public String toHtmlNotNull(String value) {
+            return "<a href='homePage:" + value + "'>" + value + "</a>";
+        }
+    };
 
     private final String title;
 
