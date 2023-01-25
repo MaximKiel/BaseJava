@@ -37,8 +37,10 @@ public class ResumeServlet extends HttpServlet {
                 response.sendRedirect("resume");
                 return;
             }
-            case "view", "edit" -> {
-                resume = storage.get(uuid);
+            case "view", "edit" -> resume = storage.get(uuid);
+            case "save" -> {
+                resume = new Resume(request.getParameter("fullName"));
+                storage.save(resume);
             }
             default -> throw new IllegalStateException("Action " + action + " is illegal");
         }
