@@ -48,7 +48,7 @@ public class ResumeTestData {
                         new Organization.Period("Инженер по аппаратному и программному тестированию", "Тестирование, отладка, внедрение ПО цифровой телефонной станции ",
                                 1997, Month.SEPTEMBER, 2005, Month.JANUARY)),
                 new Organization("Siemens AG", "https://www.siemens.com/ru/ru/home.html",
-                        new Organization.Period("Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix).", null,
+                        new Organization.Period("Разработчик ПО", "Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix).",
                                 2005, Month.JANUARY, 2007, Month.FEBRUARY)),
                 new Organization("Enkata", "http://enkata.com/",
                         new Organization.Period("Разработчик ПО", "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей кластерного J2EE приложения (OLAP, Data mining).",
