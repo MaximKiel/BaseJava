@@ -12,7 +12,7 @@ public enum ContactType {
     EMAIL ("Почта") {
         @Override
         public String toHtmlNotNull(String value) {
-            return "<a href='email:" + value + "'>" + value + "</a>";
+            return "<a href='mailto:" + value + "'>" + value + "</a>";
         }
     },
     LINKEDIN ("Профиль LinkedIn") {

@@ -27,13 +27,11 @@
                          type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType, ru.javawebinar.basejava.model.AbstractSection>"/>
     <h3><%=sectionEntry.getKey().getTitle() + ": "%><br/></h3>
     <c:choose>
-
         <c:when test="${sectionEntry.key.name().equals('PERSONAL') || sectionEntry.key.name().equals('OBJECTIVE')}">
             <ul>
                 <li><%=sectionEntry.getValue().toString()%><br/></li>
             </ul>
         </c:when>
-
         <c:when test="${sectionEntry.key.name().equals('ACHIEVEMENT') || sectionEntry.key.name().equals('QUALIFICATIONS')}">
             <c:forEach var="section" items="${sectionEntry.value.get()}">
                 <jsp:useBean id="section"
@@ -43,7 +41,6 @@
                 </ul>
             </c:forEach>
         </c:when>
-
         <c:otherwise>
             <c:forEach var="org" items="${sectionEntry.value.get()}">
                 <jsp:useBean id="org"
