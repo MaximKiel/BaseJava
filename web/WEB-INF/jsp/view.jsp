@@ -28,17 +28,21 @@
     <h3><%=sectionEntry.getKey().getTitle() + ": "%><br/></h3>
     <c:choose>
         <c:when test="${sectionEntry.key.name().equals('PERSONAL') || sectionEntry.key.name().equals('OBJECTIVE')}">
+            <c:if test="${!sectionEntry.getValue().toString().equals('')}">
             <ul>
                 <li><%=sectionEntry.getValue().toString()%><br/></li>
             </ul>
+            </c:if>
         </c:when>
         <c:when test="${sectionEntry.key.name().equals('ACHIEVEMENT') || sectionEntry.key.name().equals('QUALIFICATIONS')}">
             <c:forEach var="section" items="${sectionEntry.value.get()}">
                 <jsp:useBean id="section"
                              type="java.lang.String"/>
+                <c:if test="${!section.equals('')}">
                 <ul>
                     <li><%=section%><br/></li>
                 </ul>
+                </c:if>
             </c:forEach>
         </c:when>
         <c:otherwise>
