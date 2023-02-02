@@ -30,28 +30,49 @@
 </p>
 <h3>Секции:</h3>
 <p>
-<c:forEach var="sectionEntry" items="${resume.sections}">
-    <jsp:useBean id="sectionEntry"
-                 type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType, ru.javawebinar.basejava.model.AbstractSection>"/>
+    <c:forEach var="type" items="<%=SectionType.values()%>">
     <dl>
-        <dt>${sectionEntry.getKey().getTitle()}</dt><br/>
-        <c:choose>
-            <c:when test="${sectionEntry.key.name().equals('PERSONAL') || sectionEntry.key.name().equals('OBJECTIVE')}">
-                <dd><input type="text" name="${sectionEntry.key.name()}" size=210 value="${sectionEntry.getValue().toString()}"></dd>
-            </c:when>
-            <c:when test="${sectionEntry.key.name().equals('ACHIEVEMENT') || sectionEntry.key.name().equals('QUALIFICATIONS')}">
-                <c:forEach var="section" items="${sectionEntry.value.get()}">
-                    <jsp:useBean id="section"
-                                 type="java.lang.String"/>
-                    <dd><input type="text" name="${sectionEntry.key.name()}" size=210 value="${section}"></dd>
-                </c:forEach>
-            </c:when>
-            <c:otherwise>
-                <dd><input type="text" name="${sectionEntry.key.name()}" size=120 value="${sectionEntry.getValue().toString()}"></dd>
-            </c:otherwise>
-        </c:choose>
+        <dt>${type.title}</dt>
+    <c:choose>
+        <c:when test="${type.name().equals('PERSONAL') || type.name().equals('OBJECTIVE')}">
+            <dd><input type="text" name="${type.name()}" size=210 value="${resume.getSection(type).get()}"></dd>
+        </c:when>
+        <c:when test="${type.name().equals('ACHIEVEMENT') || type.name().equals('QUALIFICATIONS')}">
+            <c:forEach var="section" items="${resume.getSection(type).get()}">
+                <jsp:useBean id="section"
+                             type="java.lang.String"/>
+                <dd><input type="text" name="${type.name()}" size=210 value="${section}"></dd>
+            </c:forEach>
+        </c:when>
+        <c:otherwise>
+            <dd><input type="text" name="${type.name()}" size=120 value="${resume.getSection(type).get()}"></dd>
+        </c:otherwise>
+    </c:choose>
     </dl>
     </c:forEach>
+
+<%--<c:forEach var="sectionEntry" items="${resume.sections}">--%>
+<%--    <jsp:useBean id="sectionEntry"--%>
+<%--                 type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType, ru.javawebinar.basejava.model.AbstractSection>"/>--%>
+<%--    <dl>--%>
+<%--        <dt>${sectionEntry.getKey().getTitle()}</dt><br/>--%>
+<%--        <c:choose>--%>
+<%--            <c:when test="${sectionEntry.key.name().equals('PERSONAL') || sectionEntry.key.name().equals('OBJECTIVE')}">--%>
+<%--                <dd><input type="text" name="${sectionEntry.key.name()}" size=210 value="${sectionEntry.getValue().toString()}"></dd>--%>
+<%--            </c:when>--%>
+<%--            <c:when test="${sectionEntry.key.name().equals('ACHIEVEMENT') || sectionEntry.key.name().equals('QUALIFICATIONS')}">--%>
+<%--                <c:forEach var="section" items="${sectionEntry.value.get()}">--%>
+<%--                    <jsp:useBean id="section"--%>
+<%--                                 type="java.lang.String"/>--%>
+<%--                    <dd><input type="text" name="${sectionEntry.key.name()}" size=210 value="${section}"></dd>--%>
+<%--                </c:forEach>--%>
+<%--            </c:when>--%>
+<%--            <c:otherwise>--%>
+<%--                <dd><input type="text" name="${sectionEntry.key.name()}" size=120 value="${sectionEntry.getValue().toString()}"></dd>--%>
+<%--            </c:otherwise>--%>
+<%--        </c:choose>--%>
+<%--    </dl>--%>
+<%--    </c:forEach>--%>
     </p>
     <hr>
     <button type="submit">Сохранить</button>

@@ -3,14 +3,12 @@ package ru.javawebinar.basejava.web;
 import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.storage.Storage;
-import ru.javawebinar.basejava.util.JsonParser;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class ResumeServlet extends HttpServlet {
 
@@ -26,6 +24,7 @@ public class ResumeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String uuid = request.getParameter("uuid");
         String action = request.getParameter("action");
+
         if (action == null) {
             request.setAttribute("allResumes", storage.getAllSorted());
             request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
@@ -40,7 +39,7 @@ public class ResumeServlet extends HttpServlet {
             }
             case "view", "edit" -> resume = storage.get(uuid);
             case "save" -> {
-                saveResume(new Resume(), request);
+                resume = new Resume();
             }
             default -> throw new IllegalStateException("Action " + action + " is illegal");
         }
@@ -54,8 +53,17 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        Resume resume = storage.get(uuid);
-        resume.setFullName(fullName);
+
+        Resume resume;
+        boolean exist;
+        if (uuid != null && !uuid.equals("")) {
+            exist = true;
+            resume = storage.get(uuid);
+            resume.setFullName(fullName);
+        } else {
+            exist = false;
+            resume = new Resume(fullName);
+        }
 
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
@@ -70,39 +78,28 @@ public class ResumeServlet extends HttpServlet {
             if (type.name().equals("EXPERIENCE") || type.name().equals("EDUCATION")) {
                 break;
             }
-            resume.getSections().remove(type);
-            String[] section = request.getParameterMap().get(type.name());
+            String[] section = request.getParameterValues(type.name());
             if (section == null) {
                 resume.getSections().remove(type);
-            } else if (type.name().equals("PERSONAL") || type.name().equals("OBJECTIVE")) {
-                TextSection textSection = new TextSection(section[0]);
-                resume.addSection(type, textSection);
-            } else if (type.name().equals("ACHIEVEMENT") || type.name().equals("QUALIFICATIONS")){
-                ListSection listSection = new ListSection(section);
-                resume.addSection(type, listSection);
+                break;
+            }
+            switch (type) {
+                case PERSONAL, OBJECTIVE -> {
+                    TextSection textSection = new TextSection(section[0]);
+                    resume.addSection(type, textSection);
+                }
+                case ACHIEVEMENT, QUALIFICATIONS -> {
+                    ListSection listSection = new ListSection(section);
+                    resume.addSection(type, listSection);
+                }
             }
         }
 
-        storage.update(resume);
+        if (exist) {
+            storage.update(resume);
+        } else {
+            storage.save(resume);
+        }
         response.sendRedirect("resume");
-    }
-
-    protected void saveResume(Resume resume, HttpServletRequest request) {
-        for (ContactType type : ContactType.values()) {
-            String value = request.getParameter(type.name());
-            if (value != null && value.trim().length() != 0) {
-                resume.addContact(type, value);
-            }
-        }
-
-        for (SectionType type : SectionType.values()) {
-            resume.getSections().remove(type);
-            String section = Arrays.toString(request.getParameterMap().get(type.name()));
-            if (section.trim().length() != 0) {
-                resume.addSection(type, JsonParser.read(section, AbstractSection.class));
-            }
-        }
-
-        storage.save(resume);
     }
 }
