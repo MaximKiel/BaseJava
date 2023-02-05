@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="ru.javawebinar.basejava.model.*" %>
 <%@ page import="java.time.LocalDate" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
@@ -25,32 +26,47 @@
         <c:forEach var="sectionEntry" items="${resume.sections}">
             <jsp:useBean id="sectionEntry"
                          type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType, ru.javawebinar.basejava.model.AbstractSection>"/>
-    <h3><%=sectionEntry.getKey().getTitle() + ": "%><br/></h3>
+            <c:set var="type" value="${sectionEntry.key}"/>
+            <%--                <c:set var="section" value="${sectionEntry.value}"/>--%>
+            <%--                <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>--%>
+    <h3>${type.title}<br/></h3>
     <c:choose>
-        <c:when test="${sectionEntry.key.name().equals('PERSONAL') || sectionEntry.key.name().equals('OBJECTIVE')}">
-            <c:if test="${!sectionEntry.getValue().toString().equals('')}">
+
+        <c:when test="${(type.name().equals('PERSONAL') || type.name().equals('OBJECTIVE'))}">
             <ul>
-                <li><%=sectionEntry.getValue().toString()%><br/></li>
+                <li><%=((TextSection) sectionEntry.getValue()).get()%><br/></li>
             </ul>
-            </c:if>
+<%--            <c:set var="textSection" value="${sectionEntry.value}"/>--%>
+<%--            <jsp:useBean id="textSection" type="ru.javawebinar.basejava.model.TextSection"/>--%>
+<%--            <c:if test="${!textSection.toString().equals('')}">--%>
+<%--                <ul>--%>
+<%--                    <li><%=textSection.get()%><br/></li>--%>
+<%--                </ul>--%>
+<%--            </c:if>--%>
         </c:when>
-        <c:when test="${sectionEntry.key.name().equals('ACHIEVEMENT') || sectionEntry.key.name().equals('QUALIFICATIONS')}">
-            <c:forEach var="section" items="${sectionEntry.value.get()}">
-                <jsp:useBean id="section"
-                             type="java.lang.String"/>
-                <c:if test="${!section.equals('')}">
+
+        <c:when test="${(type.name().equals('ACHIEVEMENT') || type.name().equals('QUALIFICATIONS'))}">
+            <c:forEach var="list" items="<%=((ListSection) sectionEntry.getValue()).get()%>">
                 <ul>
-                    <li><%=section%><br/></li>
+                    <li>${list}</li>
                 </ul>
-                </c:if>
             </c:forEach>
+<%--            --%>
+<%--            <c:set var="listSection" value="${sectionEntry.value}"/>--%>
+<%--            <jsp:useBean id="listSection" type="ru.javawebinar.basejava.model.ListSection"/>--%>
+<%--            <c:forEach var="list" items="<%=listSection.get()%>">--%>
+<%--                <ul>--%>
+<%--                    <li>${list}</li>--%>
+<%--                </ul>--%>
+<%--            </c:forEach>--%>
         </c:when>
-        <c:otherwise>
-            <c:forEach var="org" items="${sectionEntry.value.get()}">
+        <c:when test="${(type.name().equals('EXPERIENCE') || type.name().equals('EDUCATION'))}">
+            <c:forEach var="org" items="<%=((OrganizationSection) sectionEntry.getValue()).get()%>">
                 <jsp:useBean id="org"
                              type="ru.javawebinar.basejava.model.Organization"/>
                 <%=org.nameToHtml()%><br/>
-                <c:forEach items="${org.getPeriods()}" var="period">
+
+                <c:forEach var="period" items="${org.getPeriods()}">
                     <jsp:useBean id="period"
                                  type="ru.javawebinar.basejava.model.Organization.Period"/>
                     <tags:localDate date="${period.startDate}"/> -
@@ -68,7 +84,32 @@
                     </c:if>
                 </c:forEach>
             </c:forEach>
-        </c:otherwise>
+
+<%--            <c:set var="orgSection" value="${sectionEntry.value}"/>--%>
+<%--            <jsp:useBean id="orgSection" type="ru.javawebinar.basejava.model.OrganizationSection"/>--%>
+<%--            <c:forEach var="org" items="${orgSection.get()}">--%>
+<%--                <jsp:useBean id="org"--%>
+<%--                             type="ru.javawebinar.basejava.model.Organization"/>--%>
+<%--                <%=org.nameToHtml()%><br/>--%>
+<%--                <c:forEach items="${org.getPeriods()}" var="period">--%>
+<%--                    <jsp:useBean id="period"--%>
+<%--                                 type="ru.javawebinar.basejava.model.Organization.Period"/>--%>
+<%--                    <tags:localDate date="${period.startDate}"/> ---%>
+<%--                    <c:choose>--%>
+<%--                        <c:when test="${period.endDate.isAfter(LocalDate.now())}">--%>
+<%--                            Сейчас--%>
+<%--                        </c:when>--%>
+<%--                        <c:otherwise>--%>
+<%--                            <tags:localDate date="${period.endDate}"/>--%>
+<%--                        </c:otherwise>--%>
+<%--                    </c:choose>--%>
+<%--                    <b><c:out value="${period.title}"/></b><br/>--%>
+<%--                    <c:if test="${period.description != ''}">--%>
+<%--                        <c:out value="${period.description}"/><br/>--%>
+<%--                    </c:if>--%>
+<%--                </c:forEach>--%>
+<%--            </c:forEach>--%>
+        </c:when>
     </c:choose>
     </c:forEach>
     </p>
