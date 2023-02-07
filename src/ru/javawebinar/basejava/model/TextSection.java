@@ -10,6 +10,8 @@ public class TextSection extends AbstractSection {
     public TextSection() {
     }
 
+    public static final TextSection DEFAULT = new TextSection("");
+
     public TextSection(String text) {
         Objects.requireNonNull(text, "content must not be null");
         this.text = text;

@@ -28,6 +28,8 @@ public class Organization implements Serializable {
     public Organization() {
     }
 
+    public static final Organization DEFAULT = new Organization("", "", Period.DEFAULT);
+
     public Organization(String name, String website, Period... periods) {
         this(name, website, Arrays.asList(periods));
     }
@@ -104,6 +106,8 @@ public class Organization implements Serializable {
 
         public Period() {
         }
+
+        public static final Period DEFAULT = new Period();
 
         public Period(String title, String description, int startYear, Month startMonth) {
             this(title, description, DateUtil.of(startYear, startMonth), NOW);

@@ -12,6 +12,8 @@ public class ListSection extends AbstractSection {
     public ListSection() {
     }
 
+    public static final ListSection DEFAULT = new ListSection("");
+
     public ListSection(String... items) {
         this(Arrays.asList(items));
     }

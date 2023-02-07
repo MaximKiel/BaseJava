@@ -19,6 +19,17 @@ public class Resume implements Comparable<Resume>, Serializable {
     public Resume() {
     }
 
+    public static final Resume DEFAULT = new Resume();
+
+    static {
+        DEFAULT.addSection(SectionType.PERSONAL, TextSection.DEFAULT);
+        DEFAULT.addSection(SectionType.OBJECTIVE, TextSection.DEFAULT);
+        DEFAULT.addSection(SectionType.ACHIEVEMENT, ListSection.DEFAULT);
+        DEFAULT.addSection(SectionType.QUALIFICATIONS, ListSection.DEFAULT);
+        DEFAULT.addSection(SectionType.EXPERIENCE, new OrganizationSection(Organization.DEFAULT));
+        DEFAULT.addSection(SectionType.EDUCATION, new OrganizationSection(Organization.DEFAULT));
+    }
+
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
     }

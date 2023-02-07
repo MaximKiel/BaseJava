@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
 
@@ -21,7 +23,7 @@ public class ResumeServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, IllegalStateException {
         String uuid = request.getParameter("uuid");
         String action = request.getParameter("action");
 
@@ -30,6 +32,7 @@ public class ResumeServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
             return;
         }
+
         Resume resume;
         switch (action) {
             case "delete" -> {
@@ -37,9 +40,40 @@ public class ResumeServlet extends HttpServlet {
                 response.sendRedirect("resume");
                 return;
             }
-            case "view", "edit" -> resume = storage.get(uuid);
-            case "save" -> {
-                resume = new Resume();
+            case "view" -> resume = storage.get(uuid);
+            case "save" -> resume = Resume.DEFAULT;
+            case "edit" -> {
+                resume = storage.get(uuid);
+                for (SectionType type : SectionType.values()) {
+                    AbstractSection section = resume.getSection(type);
+                    switch (type) {
+                        case OBJECTIVE, PERSONAL -> {
+                            if (section == null) {
+                                section = TextSection.DEFAULT;
+                            }
+                        }
+                        case ACHIEVEMENT, QUALIFICATIONS -> {
+                            if (section == null) {
+                                section = ListSection.DEFAULT;
+                            }
+                        }
+                        case EXPERIENCE, EDUCATION -> {
+                            OrganizationSection organizationSection = (OrganizationSection) section;
+                            List<Organization> organizations = new ArrayList<>();
+                            organizations.add(Organization.DEFAULT);
+                            if (organizationSection != null) {
+                                for (Organization organization : organizationSection.get()) {
+                                    List<Organization.Period> periods = new ArrayList<>();
+                                    periods.add(Organization.Period.DEFAULT);
+                                    periods.addAll(organization.getPeriods());
+                                    organizations.add(new Organization(organization.getName(), organization.getWebsite(), periods));
+                                }
+                            }
+                            section = new OrganizationSection(organizations);
+                        }
+                    }
+                    resume.addSection(type, section);
+                }
             }
             default -> throw new IllegalStateException("Action " + action + " is illegal");
         }
@@ -54,8 +88,14 @@ public class ResumeServlet extends HttpServlet {
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
 
+        if (fullName.equals("")) {
+            response.sendRedirect("resume");
+            return;
+        }
+
         Resume resume;
         boolean exist;
+
         if (uuid != null && !uuid.equals("")) {
             exist = true;
             resume = storage.get(uuid);

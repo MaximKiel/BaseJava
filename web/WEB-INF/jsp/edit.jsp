@@ -36,71 +36,37 @@
             <dt>${type.title}</dt>
             <c:choose>
                 <c:when test="${type=='OBJECTIVE'}">
-                    <input type='text' name='${type}' size=75 value='<%=((TextSection)resume.getSection(OBJECTIVE)).get()%>'>
+                    <input type='text' name='${type}' size=210 value='<%=((TextSection)resume.getSection(OBJECTIVE)).get()%>'>
                 </c:when>
 
                 <c:when test="${type=='PERSONAL'}">
-                    <input type='text' name='${type}' size=75 value='<%=((TextSection)resume.getSection(PERSONAL)).get()%>'>
+                    <input type='text' name='${type}' size=210 value='<%=((TextSection)resume.getSection(PERSONAL)).get()%>'>
                 </c:when>
 
                 <c:when test="${type=='QUALIFICATIONS'}">
-                    <textarea name='${type}' cols=75
-                              rows=5><%=String.join("\n", ((ListSection) resume.getSection(QUALIFICATIONS)).get())%></textarea>
+                    <textarea name='${type}' cols=210
+                              rows=10><%=String.join("\n", ((ListSection) resume.getSection(QUALIFICATIONS)).get())%></textarea>
                 </c:when>
 
                 <c:when test="${type=='ACHIEVEMENT'}">
-                    <textarea name='${type}' cols=75
-                              rows=5><%=String.join("\n", ((ListSection) resume.getSection(ACHIEVEMENT)).get())%></textarea>
+                    <textarea name='${type}' cols=210
+                              rows=10><%=String.join("\n", ((ListSection) resume.getSection(ACHIEVEMENT)).get())%></textarea>
                 </c:when>
 
                 <c:when test="${type.name().equals('EXPERIENCE')}">
-                    <dd><input type="text" name="${type.name()}" size=120 value="<%=((OrganizationSection)resume.getSection(EXPERIENCE)).get()%>"></dd>
+                    <dd><input type="text" name="${type.name()}" size=210 value="<%=((OrganizationSection)resume.getSection(EXPERIENCE)).get()%>"></dd>
                 </c:when>
 
                 <c:when test="${type.name().equals('EDUCATION')}">
-                    <dd><input type="text" name="${type.name()}" size=120 value="<%=((OrganizationSection)resume.getSection(EDUCATION)).get()%>"></dd>
+                    <dd><input type="text" name="${type.name()}" size=210 value="<%=((OrganizationSection)resume.getSection(EDUCATION)).get()%>"></dd>
                 </c:when>
             </c:choose>
         </dl>
         </c:forEach>
-
-
-<%--            <c:forEach var="type" items="<%=SectionType.values()%>">--%>
-<%--        <dl>--%>
-<%--            <dt>${type.title}</dt>--%>
-<%--            <c:choose>--%>
-<%--                <c:when test="${type.name().equals('PERSONAL') || type.name().equals('OBJECTIVE')}">--%>
-<%--                    <c:set var="textSection" value="${resume.getSection(type)}"/>--%>
-<%--                    <jsp:useBean id="textSection" class="ru.javawebinar.basejava.model.TextSection"/>--%>
-<%--                    <c:if test="${textSection != null}">--%>
-<%--                        <dd><input type="text" name="${type.name()}" size=210 value="<%=textSection.get()%>"></dd>--%>
-<%--                    </c:if>--%>
-<%--                </c:when>--%>
-
-<%--                <c:when test="${type.name().equals('ACHIEVEMENT') || type.name().equals('QUALIFICATIONS')}">--%>
-<%--                    <c:set var="listSection" value="${resume.getSection(type)}"/>--%>
-<%--                    <jsp:useBean id="listSection" class="ru.javawebinar.basejava.model.ListSection"/>--%>
-<%--                    <c:if test="${listSection != null}">--%>
-<%--                <textarea name='${type}' cols=75--%>
-<%--                          rows=5><%=String.join("\n", ((ListSection) resume.getSection(ACHIEVEMENT)).get())%>--%>
-<%--                </textarea>--%>
-<%--                    </c:if>--%>
-<%--                </c:when>--%>
-
-<%--                <c:when test="${type.name().equals('EXPERIENCE') || type.name().equals('EDUCATION')}">--%>
-<%--                    <c:set var="orgSection" value="${resume.getSection(type)}"/>--%>
-<%--                    <jsp:useBean id="orgSection" class="ru.javawebinar.basejava.model.OrganizationSection"/>--%>
-<%--                    <c:if test="${orgSection != null}">--%>
-<%--                        <dd><input type="text" name="${type.name()}" size=120 value="<%=orgSection.get()%>"></dd>--%>
-<%--                    </c:if>--%>
-<%--                </c:when>--%>
-<%--            </c:choose>--%>
-<%--        </dl>--%>
-<%--        </c:forEach>--%>
         </p>
         <hr>
         <button type="submit">Сохранить</button>
-        <button onclick="window.history.back()">Отменить</button>
+        <button type="reset" onclick="window.history.back()">Отменить</button>
     </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
