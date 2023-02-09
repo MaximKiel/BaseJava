@@ -17,7 +17,7 @@
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <dl>
             <dt>Имя:</dt>
-            <dd><input type="text" name="fullName" size=50 value="${resume.fullName}"></dd>
+            <dd><input type="text" name="fullName" size=50 value="${resume.fullName}" required></dd>
         </dl>
         <h3>Контакты:</h3>
         <p>
@@ -54,11 +54,40 @@
                 </c:when>
 
                 <c:when test="${type.name().equals('EXPERIENCE')}">
-                    <dd><input type="text" name="${type.name()}" size=210 value="<%=((OrganizationSection)resume.getSection(EXPERIENCE)).get()%>"></dd>
+                    <c:forEach var="orgExp" items="<%=((OrganizationSection)resume.getSection(EXPERIENCE)).get()%>"
+                    varStatus="counter">
+                        <br/>
+                        <jsp:useBean id="orgExp" type="ru.javawebinar.basejava.model.Organization"/>
+                        <dd>Название: <input type="text" name="${type.name()}" size=50 value="<%=orgExp.getName()%>"></dd><br/>
+                        <dd>Сайт: <input type="text" name="${type.name()}" size=50 value="<%=orgExp.getWebsite()%>"></dd><br/>
+                        <div style="margin-left: 25px">
+                            <c:forEach var="periodExp" items="${orgExp.periods}">
+                                <jsp:useBean id="periodExp" type="ru.javawebinar.basejava.model.Organization.Period"/>
+                                <dd>Начало периода: <input type="text" name="${type.name()}" size=50 value="<%=periodExp.getStartDate()%>"></dd><br/>
+                                <dd>Окончание периода: <input type="text" name="${type.name()}" size=50 value="<%=periodExp.getEndDate()%>"></dd><br/>
+                                <dd>Подзаголовок: <input type="text" name="${type.name()}" size=100 value="<%=periodExp.getTitle()%>"></dd><br/>
+                                <dd>Описание: <input type="text" name="${type.name()}" size=175 value="<%=periodExp.getDescription()%>"></dd><br/>
+                            </c:forEach>
+                        </div>
+                    </c:forEach>
+                    <br/>
                 </c:when>
 
                 <c:when test="${type.name().equals('EDUCATION')}">
-                    <dd><input type="text" name="${type.name()}" size=210 value="<%=((OrganizationSection)resume.getSection(EDUCATION)).get()%>"></dd>
+                    <c:forEach var="orgEdu" items="<%=((OrganizationSection)resume.getSection(EDUCATION)).get()%>">
+                        <br/>
+                        <jsp:useBean id="orgEdu" type="ru.javawebinar.basejava.model.Organization"/>
+                        <dd>Название: <input type="text" name="${type.name()}" size=50 value="<%=orgEdu.getName()%>"></dd><br/>
+                        <dd>Сайт: <input type="text" name="${type.name()}" size=50 value="<%=orgEdu.getWebsite()%>"></dd><br/>
+                        <c:forEach var="periodEdu" items="${orgEdu.periods}">
+                            <jsp:useBean id="periodEdu" type="ru.javawebinar.basejava.model.Organization.Period"/>
+                            <dd>Начало периода: <input type="text" name="${type.name()}" size=50 value="<%=periodEdu.getStartDate()%>"></dd><br/>
+                            <dd>Окончание периода: <input type="text" name="${type.name()}" size=50 value="<%=periodEdu.getEndDate()%>"></dd><br/>
+                            <dd>Подзаголовок: <input type="text" name="${type.name()}" size=100 value="<%=periodEdu.getTitle()%>"></dd><br/>
+                            <dd>Описание: <input type="text" name="${type.name()}" size=175 value="<%=periodEdu.getDescription()%>"></dd><br/>
+                        </c:forEach>
+                    </c:forEach>
+                    <br/>
                 </c:when>
             </c:choose>
         </dl>

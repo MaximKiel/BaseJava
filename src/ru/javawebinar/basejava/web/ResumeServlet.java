@@ -115,11 +115,11 @@ public class ResumeServlet extends HttpServlet {
         }
 
         for (SectionType type : SectionType.values()) {
-            if (type.name().equals("EXPERIENCE") || type.name().equals("EDUCATION")) {
-                break;
-            }
+//            if (type.name().equals("EXPERIENCE") || type.name().equals("EDUCATION")) {
+//                break;
+//            }
             String section = request.getParameter(type.name());
-            if (section == null) {
+            if (section == null && section.equals("")) {
                 resume.getSections().remove(type);
                 break;
             }
@@ -131,6 +131,15 @@ public class ResumeServlet extends HttpServlet {
                 case ACHIEVEMENT, QUALIFICATIONS -> {
                     ListSection listSection = new ListSection(section.split("\n"));
                     resume.addSection(type, listSection);
+                }
+                case EXPERIENCE, EDUCATION -> {
+                    List<Organization.Period> periods = new ArrayList<>();
+                    String[] values = request.getParameterValues(type.name());
+                    for (int i = 0; i < values.length; i++) {
+
+                    }
+                    OrganizationSection organizationSection = new OrganizationSection();
+                    resume.addSection(type, organizationSection);
                 }
             }
         }
