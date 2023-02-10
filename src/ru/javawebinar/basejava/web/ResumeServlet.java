@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.web;
 import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.storage.Storage;
+import ru.javawebinar.basejava.util.DateUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -115,14 +116,13 @@ public class ResumeServlet extends HttpServlet {
         }
 
         for (SectionType type : SectionType.values()) {
-//            if (type.name().equals("EXPERIENCE") || type.name().equals("EDUCATION")) {
-//                break;
-//            }
             String section = request.getParameter(type.name());
+
             if (section == null && section.equals("")) {
                 resume.getSections().remove(type);
                 break;
             }
+
             switch (type) {
                 case PERSONAL, OBJECTIVE -> {
                     TextSection textSection = new TextSection(section);
@@ -133,13 +133,29 @@ public class ResumeServlet extends HttpServlet {
                     resume.addSection(type, listSection);
                 }
                 case EXPERIENCE, EDUCATION -> {
-                    List<Organization.Period> periods = new ArrayList<>();
+                    List<Organization> organizations = new ArrayList<>();
                     String[] values = request.getParameterValues(type.name());
+                    String[] websites = request.getParameterValues(type.name() + "website");
                     for (int i = 0; i < values.length; i++) {
+                        String name = values[i];
+                        if (name != null && !name.equals("null") && !name.equals("")) {
+                            List<Organization.Period> periods = new ArrayList<>();
+                            String periodCounter = type.name() + i;
+                            String[] startDates = request.getParameterValues(periodCounter + "startDate");
+                            String[] endDates = request.getParameterValues(periodCounter + "endDate");
+                            String[] titles = request.getParameterValues(periodCounter + "title");
+                            String[] descriptions = request.getParameterValues(periodCounter + "description");
 
+                            for (int j = 0; j < titles.length; j++) {
+                                if (titles[j] != null && !titles[j].equals("null")) {
+                                    periods.add(new Organization.Period(titles[j], descriptions[j], DateUtil.stringToLocalDate(startDates[j]), DateUtil.stringToLocalDate(endDates[j])));
+                                }
+                            }
+
+                            organizations.add(new Organization(name, websites[i], periods));
+                        }
                     }
-                    OrganizationSection organizationSection = new OrganizationSection();
-                    resume.addSection(type, organizationSection);
+                    resume.addSection(type, new OrganizationSection(organizations));
                 }
             }
         }
