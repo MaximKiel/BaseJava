@@ -116,7 +116,7 @@
                                 <jsp:useBean id="periodEdu" type="ru.javawebinar.basejava.model.Organization.Period"/>
                                 <dd>Начало периода (в формате ММ/гггг):
                                     <input type="text" name="${type.name()}${loopEdu.index}startDate" size=50
-                                           value="<%=DateUtil.localDateToString(periodEdu.getStartDate())%>"">
+                                           value="<%=DateUtil.localDateToString(periodEdu.getStartDate())%>">
                                 </dd>
                                 <br/>
                                 <dd>Окончание периода (в формате ММ/гггг):
