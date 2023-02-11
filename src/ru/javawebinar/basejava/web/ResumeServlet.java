@@ -151,7 +151,6 @@ public class ResumeServlet extends HttpServlet {
                                     periods.add(new Organization.Period(titles[j], descriptions[j], DateUtil.stringToLocalDate(startDates[j]), DateUtil.stringToLocalDate(endDates[j])));
                                 }
                             }
-
                             organizations.add(new Organization(name, websites[i], periods));
                         }
                     }

@@ -21,7 +21,6 @@ public class DateUtil {
     }
 
     public static LocalDate stringToLocalDate(String date) {
-
         YearMonth yearMonth = YearMonth.parse(date, DateTimeFormatter.ofPattern("MM/yyyy"));
         return LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
     }

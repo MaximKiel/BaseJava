@@ -41,9 +41,9 @@
 
         <c:when test="${(type.name().equals('ACHIEVEMENT') || type.name().equals('QUALIFICATIONS')) && sectionEntry.value != '[]'}">
             <c:forEach var="list" items="<%=((ListSection) sectionEntry.getValue()).get()%>">
-                    <ul>
-                        <li>${list}</li>
-                    </ul>
+                <ul>
+                    <li>${list}</li>
+                </ul>
             </c:forEach>
         </c:when>
 
