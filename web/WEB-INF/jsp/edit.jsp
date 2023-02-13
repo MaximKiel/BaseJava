@@ -83,13 +83,29 @@
                                 </dd>
                                 <br/>
                                 <dd>Подзаголовок:
-                                    <input type="text" name="${type.name()}${loopExp.index}title" size=100
-                                           value="<%=periodExp.getTitle()%>">
+                                    <c:choose>
+                                        <c:when test="${(periodExp.getTitle() != null)}">
+                                            <input type="text" name="${type.name()}${loopExp.index}title" size=100
+                                                   value="<%=periodExp.getTitle()%>">
+                                        </c:when>
+                                        <c:when test="${(periodExp.getTitle() == null)}">
+                                            <input type="text" name="${type.name()}${loopExp.index}title" size=100
+                                                   value="">
+                                        </c:when>
+                                    </c:choose>
                                 </dd>
                                 <br/>
                                 <dd>Описание:
-                                    <input type="text" name="${type.name()}${loopExp.index}description" size=175
-                                           value="<%=periodExp.getDescription()%>">
+                                    <c:choose>
+                                    <c:when test="${(periodExp.getDescription() != null)}">
+                                        <input type="text" name="${type.name()}${loopExp.index}description" size=175
+                                               value="<%=periodExp.getDescription()%>">
+                                    </c:when>
+                                    <c:when test="${(periodExp.getDescription() == null)}">
+                                        <input type="text" name="${type.name()}${loopExp.index}description" size=175
+                                               value="">
+                                    </c:when>
+                                    </c:choose>
                                 </dd>
                                 <br/>
                             </c:forEach>
@@ -125,13 +141,29 @@
                                 </dd>
                                 <br/>
                                 <dd>Подзаголовок:
-                                    <input type="text" name="${type.name()}${loopEdu.index}title" size=100
-                                           value="<%=periodEdu.getTitle()%>">
+                                    <c:choose>
+                                        <c:when test="${(periodEdu.getTitle() != null)}">
+                                            <input type="text" name="${type.name()}${loopEdu.index}title" size=100
+                                                   value="<%=periodEdu.getTitle()%>">
+                                        </c:when>
+                                        <c:when test="${(periodEdu.getTitle() == null)}">
+                                            <input type="text" name="${type.name()}${loopEdu.index}title" size=100
+                                                   value="">
+                                        </c:when>
+                                    </c:choose>
                                 </dd>
                                 <br/>
                                 <dd>Описание:
-                                    <input type="text" name="${type.name()}${loopEdu.index}description" size=175
-                                           value="<%=periodEdu.getDescription()%>">
+                                    <c:choose>
+                                        <c:when test="${(periodEdu.getDescription() != null)}">
+                                            <input type="text" name="${type.name()}${loopEdu.index}description" size=175
+                                                   value="<%=periodEdu.getDescription()%>">
+                                        </c:when>
+                                        <c:when test="${(periodEdu.getDescription() == null)}">
+                                            <input type="text" name="${type.name()}${loopEdu.index}description" size=175
+                                                   value="">
+                                        </c:when>
+                                    </c:choose>
                                 </dd>
                                 <br/>
                             </c:forEach>

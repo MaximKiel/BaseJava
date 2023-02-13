@@ -129,7 +129,14 @@ public class ResumeServlet extends HttpServlet {
                     resume.addSection(type, textSection);
                 }
                 case ACHIEVEMENT, QUALIFICATIONS -> {
-                    ListSection listSection = new ListSection(section.split("\n"));
+                    List<String> listTmp = new ArrayList<>();
+                    String[] strings = section.split("\n");
+                    for (String s : strings) {
+                        if (!s.equals("\r")) {
+                            listTmp.add(s);
+                        }
+                    }
+                    ListSection listSection = new ListSection(listTmp);
                     resume.addSection(type, listSection);
                 }
                 case EXPERIENCE, EDUCATION -> {
@@ -147,7 +154,7 @@ public class ResumeServlet extends HttpServlet {
                             String[] descriptions = request.getParameterValues(periodCounter + "description");
 
                             for (int j = 0; j < titles.length; j++) {
-                                if (titles[j] != null && !titles[j].equals("null")) {
+                                if (titles[j] != null && !titles[j].equals("null") && !titles[j].equals("")) {
                                     periods.add(new Organization.Period(titles[j], descriptions[j], DateUtil.stringToLocalDate(startDates[j]), DateUtil.stringToLocalDate(endDates[j])));
                                 }
                             }
