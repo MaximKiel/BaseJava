@@ -54,7 +54,13 @@ public class Organization implements Serializable {
     }
 
     public String nameToHtml() {
-        return name == null && website == null ? "" : nameToHtmlNotNull();
+        if (name == null && website == null) {
+            return "";
+        }
+        if (name != null && (website == null || website.equals(""))) {
+            return name;
+        }
+        return nameToHtmlNotNull();
     }
 
 

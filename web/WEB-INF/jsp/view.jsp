@@ -57,7 +57,7 @@
                 <c:forEach var="period" items="${org.getPeriods()}">
                     <jsp:useBean id="period"
                                  type="ru.javawebinar.basejava.model.Organization.Period"/>
-                    <%=HtmlUtil.formatDates(period)%>
+                    <%=HtmlUtil.formatDates(period)%><br/>
 <%--                    <tags:localDate date="${period.startDate}"/> ---%>
 <%--                    <c:choose>--%>
 <%--                        <c:when test="${period.endDate.isAfter(LocalDate.now())}">--%>
@@ -67,7 +67,6 @@
 <%--                            <tags:localDate date="${period.endDate}"/>--%>
 <%--                        </c:otherwise>--%>
 <%--                    </c:choose>--%>
-
                     <b><c:out value="${period.title}"/></b><br/>
                     <c:if test="${period.description != ''}">
                         <c:out value="${period.description}"/><br/>
