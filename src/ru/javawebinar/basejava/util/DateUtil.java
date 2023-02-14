@@ -30,6 +30,9 @@ public class DateUtil {
     }
 
     public static LocalDate stringToLocalDate(String date) {
+        if (date == null || date.equals("Сейчас")) {
+            return NOW;
+        }
         YearMonth yearMonth = YearMonth.parse(date, DATE_TIME_FORMATTER);
         return LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
     }

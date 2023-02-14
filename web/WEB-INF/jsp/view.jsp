@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="ru.javawebinar.basejava.model.*" %>
 <%@ page import="java.time.LocalDate" %>
-<%@ page import="ru.javawebinar.basejava.util.HtmlUtil" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
@@ -57,16 +56,15 @@
                 <c:forEach var="period" items="${org.getPeriods()}">
                     <jsp:useBean id="period"
                                  type="ru.javawebinar.basejava.model.Organization.Period"/>
-                    <%=HtmlUtil.formatDates(period)%><br/>
-<%--                    <tags:localDate date="${period.startDate}"/> ---%>
-<%--                    <c:choose>--%>
-<%--                        <c:when test="${period.endDate.isAfter(LocalDate.now())}">--%>
-<%--                            Сейчас--%>
-<%--                        </c:when>--%>
-<%--                        <c:otherwise>--%>
-<%--                            <tags:localDate date="${period.endDate}"/>--%>
-<%--                        </c:otherwise>--%>
-<%--                    </c:choose>--%>
+                    <tags:localDate date="${period.startDate}"/> -
+                    <c:choose>
+                        <c:when test="${period.endDate.isAfter(LocalDate.now())}">
+                            Сейчас
+                        </c:when>
+                        <c:otherwise>
+                            <tags:localDate date="${period.endDate}"/>
+                        </c:otherwise>
+                    </c:choose>
                     <b><c:out value="${period.title}"/></b><br/>
                     <c:if test="${period.description != ''}">
                         <c:out value="${period.description}"/><br/>
